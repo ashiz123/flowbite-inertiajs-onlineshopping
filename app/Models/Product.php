@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 Use App\Models\Variant;
-Use App\Models\Size;
+Use App\Models\Photo;
 Use App\Models\Category;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 
 class Product extends Model
 {
@@ -30,15 +32,13 @@ class Product extends Model
     }
 
 
-    public function productVariants(){
-        return $this->variants()->get();
-    }
+   public function photo(): HasOne
+   {
+    return $this->hasOne(Photo::class);
+   }
 
 
-    public function sizes()
-    {
-        return $this->hasMany(Size::class);
-    }
+    
 
     public function categoryTitle()
     {

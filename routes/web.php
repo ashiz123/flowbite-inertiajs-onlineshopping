@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OptionController;
+use App\Http\Controllers\Admin\OrderController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,9 +35,13 @@ Route::get('/', function () {
 
 
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->controller(DashboardController::class)->group(function(){
+    Route::get('', 'index')->name('dashboard');
+});
 
 
 //profile
@@ -69,13 +75,13 @@ Route::middleware('auth')->prefix('product')->controller(ProductController::clas
     Route::match(['put', 'patch'], '/update/{id}', 'updateProduct')->name('product.update');
     Route::delete('/delete/{id}', 'deleteProduct')->name('product.delete');
 
-    Route::get('/variant/create', 'createVariant')->name('product.variant.create');
+    // Route::get('/variant/create', 'createVariant')->name('product.variant.create');
 
-    Route::get('/attribute/create', 'createAttribute')->name('attribute.create');
-    Route::post('/attribute/store', 'storeAttribute')->name('attribute.store');
+    // Route::get('/attribute/create', 'createAttribute')->name('attribute.create');
+    // Route::post('/attribute/store', 'storeAttribute')->name('attribute.store');
 
-    Route::get('/attribute/value/create', 'createAttributeValue')->name('attributeValue.create');
-    Route::post('/attribute/value/store', 'storeAttributeValue')->name('attributeValue.store');
+    // Route::get('/attribute/value/create', 'createAttributeValue')->name('attributeValue.create');
+    // Route::post('/attribute/value/store', 'storeAttributeValue')->name('attributeValue.store');
 });
 //end product
 
@@ -87,10 +93,19 @@ Route::middleware('auth')->prefix('option')->controller(OptionController::class)
 {
     Route::get('/create', 'create')->name('option.create');
     Route::post('/store', 'store' )->name('option.store');
-  
+    Route::get('/show/{id}', 'show')->name('option.show');
+    Route::get('/addVariant/{productId}', 'addVariant')->name('option.name');
+    Route::match(['put', 'patch'], '/updateVariant/{productId}', 'updateVariant')->name('option.name');
     
 });
 //end option
+
+//orders
+Route::middleware('auth')->prefix('orders')->controller(OrderController::class)->group(function(){
+    Route::get('', 'index')->name('orders.index');
+});
+//end orders
+
 
 
 //error

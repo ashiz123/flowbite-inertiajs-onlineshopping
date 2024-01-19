@@ -4,7 +4,7 @@ import AppSidebar from '@/Layouts/AppSidebar';
 import Navigation from '@/Layouts/Navigation';
 import {Heading} from '@/Components/heading';
 
-export default function error() {
+export default function error(error) {
   return (
     <>
     <Navigation />
@@ -15,6 +15,7 @@ export default function error() {
     <div className="flex flex-wrap">
     <div className="basis-full flex-wrap ">
             Error Found
+            {error}
     </div>
     </div>
     </div>

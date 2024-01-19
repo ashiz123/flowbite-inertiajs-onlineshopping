@@ -3,7 +3,7 @@ import { Table, Modal, Button, Checkbox, Label, TextInput, Select } from 'flowbi
 import { router } from '@inertiajs/react';
 
 
-import EditProduct from './EditProduct';
+import ShowProduct from './ShowProduct';
 
 
 export default function Product({product, products, categories}) {

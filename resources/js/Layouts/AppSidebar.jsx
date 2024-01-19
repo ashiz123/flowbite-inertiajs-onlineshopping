@@ -42,7 +42,7 @@ export default function AppSidebar() {
             !open && "scale-0"
           }`}
         >
-          UK bazaar
+         <a href="/dashboard">UK Bazaar</a>
         </h1>
       </div>
      
@@ -70,20 +70,12 @@ export default function AppSidebar() {
             </Sidebar.Item>
             </Sidebar.Collapse>
 
-           <Sidebar.Item href="#">
-              Shipping
+           <Sidebar.Item href="#" icon={HiShoppingBag}>
+              Orders
             </Sidebar.Item>
 
-            <Sidebar.Item href="#">
-              Shipping
-            </Sidebar.Item>
-
-            <Sidebar.Item href="#">
-              Shipping
-            </Sidebar.Item>
-
-            <Sidebar.Item href="#">
-              sfsdf
+            <Sidebar.Item href="#" icon={HiChartPie}>
+              Promotions & Discounts
             </Sidebar.Item>
 
           </Sidebar.ItemGroup>

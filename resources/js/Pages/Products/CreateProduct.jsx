@@ -1,48 +1,65 @@
 import React, {useState, useRef, createContext} from 'react'
 
 import { Button, Checkbox, Label, TextInput, Select } from 'flowbite-react';
-import { router } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 
 
 import AppSidebar from '@/Layouts/AppSidebar';
 import Navigation from '@/Layouts/Navigation';
 import {Heading} from '@/Components/heading';
-import {ProductContext} from './ProductContext';
+
+
+
 
 import { Avatar } from 'flowbite-react';
 
 
-const initialProduct  = {
-    'title' : '',
-    'description' : '',
-    'category_id' : 0,
-    'variant' : 0,
-    'product_image': ''
-}
+// const product  = {
+//     'title' : '',
+//     'description' : '',
+//     'category_id' : 0,
+    
+//     }
 
-export default function CreateProduct({categories, imageUrl}) {
 
-const[product, setProduct] = useState(initialProduct);
+export default function CreateProduct({categories}) {
+
+// const[product, setProduct] = useState(initialProduct);
 const fileInputRef = useRef(null);
+const { data, setData, post, progress } = useForm({
+ avatar: null,
+ title: '',
+ description : '',
+ variant : 0,
+})
+
 
 
 function handleChange(e)
 {
   let name = e.target.name;
   let value = e.target.value;
-  setProduct({...product, [name] : value})
+  setData({...data, [name] : value})
+}
+
+const handleFileChange = (e) =>
+{
+  e.preventDefault();
+  const selectedFile = e.target.files[0];
+  setData('avatar',selectedFile);
 }
 
 function handleVariant()
 {
-  setProduct({...product, variant : !product.variant});
+  setData({...data, variant : !data.variant});
 }
  
 function handleSubmit(e)
 {
   e.preventDefault();
-  console.log(product);
-  // router.post('/product/store', product);
+  console.log(data);
+  // router.post('/product/store', file)
+  post('/product/store', data)
 }
 
 function handleDivClick()
@@ -50,13 +67,7 @@ function handleDivClick()
   fileInputRef.current.click();
 }
 
-const handleFileChange = (e) =>
-{
-  e.preventDefault();
-  const selectedFile = e.target.files[0];
-  // console.log(String(selectedFile.name));
-  setProduct({...product, product_image: selectedFile.name});
-}
+// const imagePath = '/images/' + product.product_image;
 
 
   return (
@@ -68,6 +79,7 @@ const handleFileChange = (e) =>
       <Heading>Create Product</Heading>
 
       <form className="flex max-w-md flex-col gap-4 g" onSubmit={handleSubmit}>
+      
       <div>
         <div className="mb-1 block">
           <Label
@@ -82,7 +94,7 @@ const handleFileChange = (e) =>
           required
           shadow
           type="text"
-          value= {product.title}
+          value= {data.title}
           name= "title"
           onChange= {handleChange}
         />
@@ -106,7 +118,7 @@ const handleFileChange = (e) =>
           sizing="lg"
           type="text"
           placeholder="Description"
-          value= {product.description}
+          value= {data.description}
           name='description'
           onChange= {handleChange}
           
@@ -114,12 +126,19 @@ const handleFileChange = (e) =>
       </div>
 
     <div style={{marginTop: "5px"}}></div>
-    <Label htmlFor="Description" value="Product Image" />
-    <div className ="box-border h-32 w-32 p-4 border-2 " style={{cursor: 'pointer'}} onClick={handleDivClick}>
+    <Label htmlFor="product_image" value="Product Image" />
+
+    {
+      data.avatar ? 
+       <img src = "" size="sm" alt='dummy'/> 
+      :
+      <div className ="box-border h-32 w-32 p-4 border-2 " style={{cursor: 'pointer'}} onClick={handleDivClick}>
       <b>Upload photo</b>
-      <TextInput type='file' hidden id="fileInput"  name="product_image" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange}/>
-      {/* <img src = "/images/dummy.jpg"  size="sm" alt='dummy'/> */}
-    </div>
+      <TextInput type='file' accept=".jpeg, .png, .jpg, .gif" hidden id="fileInput"  name="product_image" ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileChange}/>
+      </div> 
+    
+    }
+    
       
 
 
@@ -139,7 +158,7 @@ const handleFileChange = (e) =>
         id="category_id"
         name = 'category_id'
         onChange= {handleChange}
-        value={product.category_id}
+        value={data.category_id}
         required
       >
          
@@ -160,7 +179,7 @@ const handleFileChange = (e) =>
         </div>
         <div className="basis-1/2 pl-10 pt-10">
         <div className="flex items-center gap-2 ">
-        <Checkbox id="variant" name = "variant" type= "checkbox"  checked = {product.variant} onChange= {handleVariant}/>
+        <Checkbox id="variant" name = "variant" type= "checkbox"  checked = {data.variant} onChange= {handleVariant}/>
         <Label htmlFor="publish">
           Variant
         </Label>

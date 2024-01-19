@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { router } from '@inertiajs/react';
+import React, {useState, useRef} from 'react'
+import { router, useForm } from '@inertiajs/react';
 
 
 import { Button, Checkbox, Label, TextInput, Select } from 'flowbite-react';
@@ -24,13 +24,18 @@ export default function CreateOption({product}) {
       'type' : '',
       'quantity': '',
       'price': '',
+      'avatar': null
       }
 
     
   const [options, setOptions] = useState([inputField]);
-  const [error, setError] = useState(null)
-
   
+  const [error, setError] = useState(null)
+  const fileInputRef = useRef(null);
+  const [imagePreview, setImagePreview] = useState([]);
+
+
+console.log(options);
 
   const data = {
     options : options,
@@ -38,8 +43,8 @@ export default function CreateOption({product}) {
   }
 
 
-  const divWidth300 = {
-    width : '300px'
+  const divWidth200 = {
+    width : '200px'
   };
 
  
@@ -53,28 +58,11 @@ export default function CreateOption({product}) {
    } 
 
    const handleSubmit = async () => {
+    //  const formData = new FormData();
+    //  formData.append('variants', data);
     // Your form submission logic using Inertia.post
-    await router.post('/option/store', data);
-    console.log('teting');
-   
-  }
-
-
-
-  // function async handleSubmit(e)
-  // {
-  //   e.preventDefault();
-  //   try{
-  //     await Inertia.post('/option/store', data);
-      
-  //   }
-  //   catch(error)
-  //   {
-  //       //handle error
-  //       setError(error.message || 'An error occurred');
-  //   }
-    
-  // }
+     await router.post('/option/store', data);
+    }
 
   function addOption()
   {
@@ -87,8 +75,38 @@ export default function CreateOption({product}) {
     setOptions(data);
    }
 
+   //To create event on picture click refrencing the input field
+  function handleClickImage()
+  {
+    fileInputRef.current.click();
+  }
 
- 
+
+  //To store image in state
+  function handleFileChange(e, index)
+  {
+    const selectedFile = e.target.files[0];
+
+    //Display image after file change with adding column of input *
+    if(selectedFile)
+    {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const preview = [...imagePreview];
+        console.log(preview);
+        preview[index] = reader.result
+        console.log(preview[index]);
+        setImagePreview(preview)
+      }
+      reader.readAsDataURL(selectedFile);
+    }
+
+    let data = [...options];
+    data[index][e.target.name] = selectedFile;
+    setOptions(data);
+  }
+
+  
 
 
   return (
@@ -108,9 +126,26 @@ export default function CreateOption({product}) {
 
     
     {
-     options.map((option, index) => (
-          <div className="flex flex-nowrap gap-3 m-5" key={index}>
-          <div style= {divWidth300}> <TextInput placeholder='Enter title' name='title' value={option.title} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
+      
+     options.map((option, index) => { 
+
+        // <Option option = {option} index = {index} />
+            
+          return (<div className="flex flex-nowrap gap-3 m-5 p-5" key={index} >
+
+          {/* For image processing and displaying */}
+          <div>
+            {
+              imagePreview[index] ?
+              <img src={imagePreview[index]} className='w-20 h-20 rounded-full mx-auto cursor-pointer' style = {{marginTop: "-15px"}} /> 
+              : 
+              <img className='w-20 h-20 rounded-full mx-auto cursor-pointer' style = {{marginTop: "-15px"}} src= "/storage/images/placeholder1.png" onClick = {handleClickImage}/>
+            }
+          <TextInput type="file" accept="images/*" style={{ display: 'none' }} placeholder='image' name='avatar'  onChange={(e) =>handleFileChange(e, index)} ref={fileInputRef}></TextInput>
+          </div>
+           {/* For image processing and displaying */}
+
+          <div style= {divWidth200}> <TextInput placeholder='Enter title' name='title' value={option.title} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div> <TextInput placeholder='SKU' name='sku' value={option.sku} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div> <TextInput placeholder='Size' name='size' value={option.size} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div> <TextInput placeholder='Color' name='color' value={option.color}  onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
@@ -120,7 +155,8 @@ export default function CreateOption({product}) {
           <div> <TextInput placeholder='Price' name='price' value={option.price} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div>  <Button onClick= {() => removeOption(index)}  color="failure" >Remove</Button></div>
           </div>
-    ))}
+
+          )})}
     
     <div className='align-right'> 
         <Button onClick= {handleSubmit} color="success">Submit Option </Button>

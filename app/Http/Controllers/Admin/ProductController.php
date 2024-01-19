@@ -5,13 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Variant;
+use App\Models\Photo;
+
+
+use App\Traits\PhotoStore;  //using trait
+use App\Http\Requests\ProductFormRequest; //using request for validation
+
 
 
 class ProductController extends Controller
 {
+
+    use PhotoStore;
     public function index()
     {
       
@@ -31,32 +40,56 @@ class ProductController extends Controller
     ]);
     }
 
-    public function storeProduct(Request $request)
+    public function storeProduct(ProductFormRequest $request)
     {
        
-        $validated = $request->validate([
-            'title' => 'required|unique:products|max:255',
-            'description' => 'required',
-            'category_id'  => 'required',
-            'variant' => 'required'
-        ]);
-        $variants = Variant::all();
-        
         try{
-            $product = Product::create($validated);
-            return Inertia::render('Options/CreateOption', ['product' => $product]);
+            $product = Product::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'category_id' => $request->input('category_id'),
+            'variant' => $request->input('variant')
+            ]);
+         
+          if($product)
+            {
+                $file =  $request->file('avatar');
+                $uploaded = $this->storeToFolder($file);
+                
+                $photo = new Photo();
+                $photo->product_id = $product->id;
+                $photo->path = $uploaded;
+                $photo->save();
+            }
+            
+            //To display variant option if variant checkbox checked otherwise go to product page.
+            if($product->variant == '1') 
+            {
+               return Inertia::render('Options/CreateOption', ['product' => $product]);
+            }else{
+                return to_route('product.index');
+            }
+            
         }
 
         catch(\Exception $e){   
-              return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);
+             return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);
         }
  
     }
 
+
+
     public function showProduct($id)
     {
-        $product = Product::with('variants', 'category')->find($id);
-         return Inertia::render('Products/EditProduct', ['product' => $product]);
+        try{
+            $product = Product::with('variants', 'category', 'photo')->find($id);
+            return Inertia::render('Products/ShowProduct', ['product' => $product]);
+        }
+        catch(\Exception $e){   
+            return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);
+       }
+       
     }   
 
     public function editProduct()
@@ -79,8 +112,8 @@ class ProductController extends Controller
     public function createAttribute()
     {
         // $product = Product::find(request('product_id'));
-        $variants = Variants::all();
-        return Inertia::render('Products/CreateAttribute', ['attributes' => $variants]);
+        // $variants = Variants::all();
+        // return Inertia::render('Products/CreateAttribute', ['attributes' => $variants]);
     }
 
 
@@ -90,31 +123,27 @@ class ProductController extends Controller
     public function storeAttribute(Request $request )
     {
        
-            $checkedAttribute = array(); //new array
-            foreach ($request->variants as $key => $value) {
-                if($value == 1){
-                    array_push($checkedAttribute, $key);
-                }
-             }
+        //     $checkedAttribute = array(); //new array
+        //     foreach ($request->variants as $key => $value) {
+        //         if($value == 1){
+        //             array_push($checkedAttribute, $key);
+        //         }
+        //      }
     
-            $productId = $request->product_id;
-            $product = Product::find($productId);
-            try{
-            if($product->variants()->attach($checkedAttribute));
-            return Inertia::render('Variant/Template', ['product'=> $product, 'variants'=> $product->productVariants()]);
-            // return to_route('product.variant.create');
-            }
+        //     $productId = $request->product_id;
+        //     $product = Product::find($productId);
+        //     try{
+        //     if($product->variants()->attach($checkedAttribute));
+        //     return Inertia::render('Variant/Template', ['product'=> $product, 'variants'=> $product->productVariants()]);
+        //     // return to_route('product.variant.create');
+        //     }
 
-            catch(\Exception $e){   
-                return to_route('product.create');
-          }
+        //     catch(\Exception $e){   
+        //         return to_route('product.create');
+        //   }
         }
 
-        public function createVariant()
-        {
-
-            return  Inertia::render('Variant/Template');
-        }
+      
 
         
 
