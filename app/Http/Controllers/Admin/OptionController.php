@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Traits\PhotoStore;
@@ -17,6 +18,12 @@ use App\Models\Photo;
 class OptionController extends Controller
 {
     use PhotoStore;
+
+    public function __construct()
+    {
+        $this->middleware('log.errors');
+    }
+    
     public function create()
     {
         $product = Product::where('id', 1)->first();
@@ -90,11 +97,37 @@ class OptionController extends Controller
      
     }
 
-    public function updateVariant($id, Request $request)
+    public function updateVariant( $id, Request $request)
     {
-        dd($request);
-      
+        $requestAsObject = (object)$request->variant;
 
+        $variant = new Variant;
+        $variant->product_id = $id;
+        $variant->sku = $requestAsObject->sku;
+        $variant->title = $requestAsObject->title;
+        $variant->size = $requestAsObject->size;
+        $variant->color = $requestAsObject->color;
+        $variant->origin = $requestAsObject->origin;
+        $variant->type = $requestAsObject->type;
+
+        $variant->quantity = $requestAsObject->quantity;
+        $variant->price = $requestAsObject->price;
+
+        if($variant->save())
+        {
+           $file =  $requestAsObject->avatar;
+           $uploaded = $this->storeToFolder($file);
+   
+           $photo = new Photo();
+           $photo->variant_id = $variant->id;
+           $photo->path = $uploaded;
+           $photo->save();
+        }
+    }
+
+    public function deleteVariant($id)
+    {
+        DB::table('variants')->where('id', $id)->delete();
 
     }
 
