@@ -94,8 +94,10 @@ Route::middleware('auth')->prefix('option')->controller(OptionController::class)
     Route::get('/create', 'create')->name('option.create');
     Route::post('/store', 'store' )->name('option.store');
     Route::get('/show/{id}', 'show')->name('option.show');
-    Route::get('/addVariant/{productId}', 'addVariant')->name('option.name');
-    Route::match(['put', 'patch'], '/updateVariant/{productId}', 'updateVariant')->name('option.name');
+    Route::get('/addVariant/{productId}', 'addVariant')->name('option.add');
+    Route::match(['put', 'patch'], '/updateVariant/{productId}', 'updateVariant')->name('option.update');
+    Route::delete('/deleteVariant/{variantId}', 'deleteVariant' )->name('option.delete');
+    //  Route::post('/updateVariant', 'updateVariant')->name('option.name');
     
 });
 //end option
