@@ -45,6 +45,14 @@ export default function AddOption({product}) {
     }
 
 
+
+    // function handlePreviousImageClick()
+    // {
+    //   fileInputRef.current.click()
+    // }
+    
+
+
   //to upload the image on div click 
     function handleClickImage()
     {
@@ -162,7 +170,7 @@ export default function AddOption({product}) {
          return(
             
             <div className="flex flex-nowrap gap-3 m-5 p-5" key={i}>
-            <img className='w-20 h-20 rounded-full mx-auto cursor-pointer' style = {{marginTop: "-15px"}} src= {path} onClick = {handleClick}/>
+            <img className='w-20 h-20 rounded-full mx-auto cursor-pointer' style = {{marginTop: "-15px"}} src= {path} />
             <TextInput type="file" accept="images/*" style={{ display: 'none' }} placeholder='image' name='avatar'  onChange={(e) =>handleFileChange(e)} ref={fileInputRef}></TextInput>
             <div > <TextInput placeholder='Enter title' name='title' value={option.title} onChange={(e) => handleInputChange(e, i)}></TextInput></div>
             <div> <TextInput placeholder='SKU' name='sku' value={option.sku} onChange={(e) => handleInputChange(e, i)}></TextInput></div>
