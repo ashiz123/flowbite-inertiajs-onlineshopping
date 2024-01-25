@@ -26,7 +26,7 @@ class ProductController extends Controller
       
       $products = Product::with('category')->get();
       $categories  = Category::all();
-      return Inertia::render('Products/Products', ['products' => $products, 'categories' => $categories]);
+      return Inertia::render('Seller/Products/Products', ['products' => $products, 'categories' => $categories]);
     }
     
 
@@ -34,7 +34,7 @@ class ProductController extends Controller
     {
         
         $categories  = Category::all();
-        return Inertia::render('Products/CreateProduct', ['categories' => $categories,
+        return Inertia::render('Seller/Products/CreateProduct', ['categories' => $categories,
         'imageUrl' => asset('images/dummy.jpg'),
     
     ]);
@@ -65,7 +65,7 @@ class ProductController extends Controller
             //To display variant option if variant checkbox checked otherwise go to product page.
             if($product->variant == '1') 
             {
-               return Inertia::render('Options/CreateOption', ['product' => $product]);
+               return Inertia::render('Seller/Options/CreateOption', ['product' => $product]);
             }else{
                 return to_route('product.index');
             }
@@ -84,7 +84,7 @@ class ProductController extends Controller
     {
         try{
             $product = Product::with('variants', 'category', 'photo')->find($id);
-            return Inertia::render('Products/ShowProduct', ['product' => $product]);
+            return Inertia::render('Seller/Products/ShowProduct', ['product' => $product]);
         }
         catch(\Exception $e){   
             return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);

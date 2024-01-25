@@ -12,6 +12,6 @@ class DashboardController extends Controller
     public function index()
     {
         $products = Product::with('category', 'variants')->latest()->paginate(6);
-        return Inertia::render('Dashboard/dashboard', ['products' => $products]);
+        return Inertia::render('Seller/Dashboard/dashboard', ['products' => $products]);
     }
 }
