@@ -46,6 +46,7 @@ export default function ShowOptionModal({openModal, variant, product, parentCall
     }
 
     const photoPath = '/storage/' + data ;
+    console.log(photoPath);
 
     
     
