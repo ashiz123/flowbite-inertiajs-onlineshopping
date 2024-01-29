@@ -13,15 +13,15 @@ const Layout = ({ children }) => {
           <header>
               <Header/>
           </header>
-          <nav>
+          {/* <nav>
             <Navigation />
-          </nav>
+          </nav> */}
           <main>
             {children}
           </main>
-          <footer>
+          {/* <footer>
              <Footer />
-          </footer>
+          </footer> */}
         </div>
       );
 }

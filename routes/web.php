@@ -25,8 +25,8 @@ use Inertia\Inertia;
 require __DIR__.'/auth.php';
 
 // Include routes for the Admin concern
-Route::prefix('business')->group(function () {
-    require __DIR__.'/routeBusiness.php';
+Route::prefix('shop')->group(function () {
+    require __DIR__.'/routeShop.php';
 });
 
 // Include routes for the User concern
