@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 
 .sidenav {
@@ -66,4 +66,11 @@
     display: flex;
     justify-content: flex-end;
 
+  }
+
+
+  .menu-center
+  {
+     margin-left: 70px;
+  
   }

@@ -27,7 +27,7 @@ class OptionController extends Controller
     public function create()
     {
         $product = Product::where('id', 1)->first();
-        return Inertia::render('Options/CreateOption', ['product' => $product]);
+        return Inertia::render('Seller/Options/CreateOption', ['product' => $product]);
     }
     
 
@@ -88,7 +88,7 @@ class OptionController extends Controller
     {
         try{
             $product = Product::with('variants.photo')->find($id);
-            return Inertia::render('Options/AddOption', ['product' => $product]);
+            return Inertia::render('Seller/Options/AddOption', ['product' => $product]);
         }
         catch(\Exception $e)
         {

@@ -9,7 +9,7 @@ import AppSidebar from '@/Layouts/AppSidebar';
 import Navigation from '@/Layouts/Navigation';
 import {Heading} from '@/Components/heading';
 
-import '../../../css/app.css';
+import '../../../../css/app.css';
 
 export default function CreateOption({product}) {
 

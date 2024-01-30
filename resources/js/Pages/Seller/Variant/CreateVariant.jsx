@@ -8,7 +8,7 @@ import AppSidebar from '@/Layouts/AppSidebar';
 import Navigation from '@/Layouts/Navigation';
 import {Heading} from '@/Components/heading';
 import Variant from './Variant';
-import {VariantReducer} from '../../Reducers/VariantReducer';
+import {VariantReducer} from '../../../Reducers/VariantReducer';
 
 const initialTodos = [
   {
