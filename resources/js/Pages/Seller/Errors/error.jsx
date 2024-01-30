@@ -14,8 +14,7 @@ export default function error(error) {
     <Heading>Error</Heading>
     <div className="flex flex-wrap">
     <div className="basis-full flex-wrap ">
-            Error Found here
-            {error}
+      {error}
     </div>
     </div>
     </div>
