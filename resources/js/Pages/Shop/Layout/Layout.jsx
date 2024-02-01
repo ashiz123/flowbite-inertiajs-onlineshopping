@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from './Header';
 import Navigation from './Navigation';
+import Nav from './Nav';
 import Footer from './Footer';
 import { initFlowbite } from 'flowbite'
 
@@ -11,11 +12,11 @@ const Layout = ({ children }) => {
     return (
         <div>
           <header>
-              <Header/>
+              {/* <Header/> */}
           </header>
-          {/* <nav>
+          <nav>
             <Navigation />
-          </nav> */}
+          </nav>
           <main>
             {children}
           </main>

@@ -6,114 +6,63 @@ export default function Index({products}) {
   console.log(products);
   return (
    <Layout class = "m-4">
+    <section>
+    <div class="grid md:grid-cols-3">
+                    <div class="relative overflow-hidden group ">
+                        <a href="" class="text-center">
+                            <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg" class="group-hover:scale-110 duration-500" alt="" />
+                            <span class="bg-white dark:bg-slate-900 group-hover:text-orange-500 py-2 px-6 rounded-full shadow dark:shadow-gray-800 absolute bottom-4 mx-4 text-lg font-medium">Ladies Wear</span>
+                        </a>
+                    </div>
+                    
+                    <div class="relative overflow-hidden group">
+                        <a href="" class="text-center">
+                            <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg" class="group-hover:scale-110 duration-500" alt="" />
+                            <span class="bg-white dark:bg-slate-900 group-hover:text-orange-500 py-2 px-6 rounded-full shadow dark:shadow-gray-800 absolute bottom-4 mx-4 text-lg font-medium">Kids Wear</span>
+                        </a>
+                    </div>
+                    
+                    <div class="relative overflow-hidden group">
+                        <a href="" class="text-center">
+                            <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg" class="group-hover:scale-110 duration-500" alt="" />
+                            <span class="bg-white dark:bg-slate-900 group-hover:text-orange-500 py-2 px-6 rounded-full shadow dark:shadow-gray-800 absolute bottom-4 mx-4 text-lg font-medium">Gents Wear</span>
+                        </a>
+                    </div>
+      </div>
+      </section>
   <div class = "m-4 ">
 
       {/* section 1 start  */}
       {/* product lists */}
   <div class="bg-white ">
   <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-8">
+    {
+      products.map(product => {
+        const imagePath = '/storage/' + product.photo.path
+        return (
           <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg" alt="Front of men's Basic Tee in black." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      Basic Tee
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">Black</p>
-                </div>
-                <p class="text-sm font-medium text-gray-900">$35</p>
-              </div>
+          <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+            <img src= {imagePath} alt="Front of men's Basic Tee in black." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
+          </div>
+          <div class="mt-4 flex justify-between">
+            <div>
+              <h3 class="text-sm text-gray-700">
+                <a href="#">
+                  <span aria-hidden="true" class="absolute inset-0"></span>
+                 {product.title}
+                </a>
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">Black</p>
             </div>
-          <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-02.jpg" alt="Front of men's Basic Tee in white." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      Basic Tee
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">Aspen White</p>
-                </div>
-                <p class="text-sm font-medium text-gray-900">$35</p>
-              </div>
-            </div>
-          <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-03.jpg" alt="Front of men's Basic Tee in dark gray." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      Basic Tee
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">Charcoal</p>
-                </div>
-                <p class="text-sm font-medium text-gray-900">$35</p>
-              </div>
-            </div>
-          <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg" alt="Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      Artwork Tee
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">Iso Dots</p>
-                </div>
-                <p class="text-sm font-medium text-gray-900">$35</p>
-              </div>
-            </div>
-            <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg" alt="Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      Artwork Tee
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">Iso Dots</p>
-                </div>
-                <p class="text-sm font-medium text-gray-900">$35</p>
-              </div>
-            </div>
-            <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                <img src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-04.jpg" alt="Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube." class="h-full w-full object-cover object-center lg:h-full lg:w-full" />
-              </div>
-              <div class="mt-4 flex justify-between">
-                <div>
-                  <h3 class="text-sm text-gray-700">
-                    <a href="#">
-                      <span aria-hidden="true" class="absolute inset-0"></span>
-                      Artwork Tee
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm text-gray-500">Iso Dots</p>
-                </div>
-                <p class="text-sm font-medium text-gray-900">$35</p>
-              </div>
-            </div>
+            <p class="text-sm font-medium text-gray-900">£{product.minimum_price}</p>
+          </div>
+        </div>
+        )
+      })
+    }
+          
+         
+           
           
         </div>
   </div>
@@ -285,6 +234,8 @@ export default function Index({products}) {
      <div class="flex-1"> category 3</div>
    </div>
 </div>
+
+
 </Layout>
   )
 }
