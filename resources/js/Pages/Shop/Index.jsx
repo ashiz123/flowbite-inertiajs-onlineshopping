@@ -1,7 +1,13 @@
 import React from 'react'
 import Layout from './Layout/Layout';
+import { router } from '@inertiajs/react';
 
 export default function Index({products}) {
+
+
+  function productOverview(id){
+    router.get('/shop/product/' + id + '/overview');
+  }
 
   console.log(products);
   return (
@@ -47,7 +53,8 @@ export default function Index({products}) {
           <div class="mt-4 flex justify-between">
             <div>
               <h3 class="text-sm text-gray-700">
-                <a href="#">
+              {/* route('editApplication', ['id' => 5]) */}
+                <a  onClick= {()  => productOverview(product.id)} >
                   <span aria-hidden="true" class="absolute inset-0"></span>
                  {product.title}
                 </a>

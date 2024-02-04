@@ -6,6 +6,7 @@ import Footer from './Footer';
 import { initFlowbite } from 'flowbite'
 
 const Layout = ({ children }) => {
+  
   initFlowbite();
 
   
@@ -17,7 +18,7 @@ const Layout = ({ children }) => {
           <nav>
             <Navigation />
           </nav>
-          <main>
+          <main className='mt-5'>
             {children}
           </main>
           {/* <footer>
