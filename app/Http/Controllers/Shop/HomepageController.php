@@ -11,7 +11,8 @@ class HomepageController extends Controller
 {
    public function index()
    {
-     $products = Product::all();
+    // $product = Product::with('variants', 'category', 'photo')->find($id);
+     $products = Product::with('variants', 'category', 'photo')->get();
      return Inertia::render('Shop/Index', ['products' => $products]);
    }
 }

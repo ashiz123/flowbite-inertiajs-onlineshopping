@@ -13,6 +13,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gridTemplateRows: {
+        '[auto,auto,1fr]': 'auto auto 1fr',
+      },
+      
       colors: {
         "dark-purple": "#081A51",
         "light-white": "rgba(255,255,255,0.17)",
@@ -27,6 +31,7 @@ module.exports = {
   },
   plugins: [
       require('flowbite/plugin'),
+      require('@tailwindcss/forms'),
       // require('@tailwindcss/aspect-ratio'),
   ],
 }

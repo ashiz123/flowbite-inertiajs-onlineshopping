@@ -31,6 +31,7 @@ const { data, setData, post, progress } = useForm({
  title: '',
  description : '',
  variant : 0,
+ minimum_price : 0
 })
 
 
@@ -142,7 +143,7 @@ function handleDivClick()
       
 
 
-      <div className='flex flex-row pt-5'>
+      <div className='flex flex-row pt-5 space-x-2'>
         <div className="basis-1/2">
         <div
       className="max-w-md"
@@ -177,7 +178,32 @@ function handleDivClick()
       </Select>
     </div>
         </div>
-        <div className="basis-1/2 pl-10 pt-10">
+
+        
+        <div className="basis-1/2 ">
+        <div className="mb-2 block">
+        <Label
+          htmlFor="minimum_price"
+          value="Set minimum price"
+        />
+      </div>
+        <TextInput
+          id="minimum_price"
+          required
+          shadow
+           type="text"
+          placeholder="Set minimum price"
+          value= {data.minimum_price}
+          name='minimum_price'
+          onChange= {handleChange}
+          
+        />
+        </div>
+        
+      </div>
+
+
+      <div className="basis-1/2  pt-5">
         <div className="flex items-center gap-2 ">
         <Checkbox id="variant" name = "variant" type= "checkbox"  checked = {data.variant} onChange= {handleVariant}/>
         <Label htmlFor="publish">
@@ -185,8 +211,6 @@ function handleDivClick()
         </Label>
       </div>
         </div>
-      </div>
-
 
 
 

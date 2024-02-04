@@ -48,7 +48,8 @@ class ProductController extends Controller
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'category_id' => $request->input('category_id'),
-            'variant' => $request->input('variant')
+            'variant' => $request->input('variant'),
+            'minimum_price' => $request->input('minimum_price')
             ]);
          
           if($product)

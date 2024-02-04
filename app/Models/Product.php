@@ -19,7 +19,7 @@ class Product extends Model
 
     protected $table = 'Products';
 
-    protected $fillable = ['title', 'description', 'category_id', 'variant' ];
+    protected $fillable = ['title', 'description', 'category_id', 'variant', 'minimum_price' ];
 
     public function variants(): HasMany
     {
