@@ -7,6 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { ProtectedRoute } from './Functions/ProtectedRoute';
 
 
 
@@ -19,7 +20,12 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render( <Provider store={store}> <App {...props} /> </Provider>);
+        root.render( 
+        <Provider store={store}> 
+        <ProtectedRoute>
+        <App {...props} /> 
+        </ProtectedRoute>    
+        </Provider>);
     },
     progress: {
         color: '#4B5563',

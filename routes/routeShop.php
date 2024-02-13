@@ -27,17 +27,14 @@ Route::middleware(['auth.user.redirect'])->group(function(){
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('shop.user.login');
 });
 
-
-
 //PAGES
 Route::get('/', [HomepageController::class, 'index'])->name('shop.index');
 Route::get('product/{id}/overview', [ProductController::class, 'show'])->name('shop.product.show');
 
 
-
 //AUTHENTICATING CUSTOMER PAGES
 Route::middleware(['auth.customer'])->group(function(){
-    Route::post('/logout', [UserController::class, 'logout'])->name('shop.user.logout');
+   Route::post('/logout', [UserController::class, 'logout'])->name('shop.user.logout');
 });
 
 

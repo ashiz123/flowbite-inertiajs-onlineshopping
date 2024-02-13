@@ -12,6 +12,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        type: 'seller'
     });
 
     useEffect(() => {
