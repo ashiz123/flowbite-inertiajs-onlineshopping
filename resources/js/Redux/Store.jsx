@@ -5,14 +5,16 @@ import { AuthReducer } from '@/Redux/Reducers/AuthReducer';
 
 
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
 const store = configureStore({
     reducer: {
       auth : AuthReducer
     },
     
-});
+}, composeEnhancers);
+
+
 
   
   export default store;

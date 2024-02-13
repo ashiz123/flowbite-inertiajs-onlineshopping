@@ -1,10 +1,64 @@
-import React from 'react'
-import { router } from '@inertiajs/react';
+import React, {useEffect, useState} from 'react'
+import { Navbar } from 'flowbite-react';
+import { Link ,router, usePage} from '@inertiajs/react'
+import { useDispatch, useSelector} from 'react-redux';
+import { loggedInUser } from '@/Functions/LoggedInUser';
+import { logoutSuccess } from '@/Redux/Actions/AuthAction';
+import { logoutUser } from '@/Functions/LogoutUser';
+import axios from 'axios';
 
 
 
+export default function Navigation({auth_user}) {
 
-export default function Navigation() {
+    const { props, setData, setPage } = usePage();
+
+
+  
+    
+
+    // const customer_auth = useSelector(state => state.auth); //data from state
+    // const dispatch = useDispatch();
+     
+    const token = localStorage.getItem('userToken');
+
+
+    const headers = {
+        'Accept' : 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+
+    
+
+   
+  
+    
+//   auth.sanctum logout
+    // function logout(e)
+    // {
+    //     e.preventDefault();
+    //     axios.delete('/api/logout', {headers})
+    //       .then((response) => {
+
+    //         localStorage.setItem('userToken', '');
+    //         dispatch(logoutSuccess());
+    //       })
+          
+    //       .catch((error) => {
+    //         // Handle error
+    //         console.error('Error:', error);
+    //       });
+        
+    //  }
+
+
+    const logout = async (e) => {
+        e.preventDefault();
+        await router.post('/shop/logout');
+        }
+
+   
+   
  
   return (
 
@@ -20,12 +74,19 @@ export default function Navigation() {
 
         
         <div className="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
-        {window.location.pathname !== '/shop/register' ?
-         <>
-            <a href= {route('shop.user.login')} className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Login</a>
+
+         {
+            props.auth_user   ? 
+            <button className='blue' onClick = {logout}>{props.auth_user.name} Logout</button> 
+            :
+             window.location.pathname !== '/shop/show-register' && window.location.pathname !== '/shop/show-login' ?
+            <>
+            <a href= {route('shop.user.showLogin')} className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Login</a>
             <a href= {route('shop.user.showRegister')} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sign up</a>
             </>
             : '' }
+
+
             <button data-collapse-toggle="mega-menu" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mega-menu" aria-expanded="false">
                 <span className="sr-only">Open main menu</span>
                 <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">

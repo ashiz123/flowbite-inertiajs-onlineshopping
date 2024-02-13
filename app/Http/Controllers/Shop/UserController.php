@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use App\Interfaces\UserRepositoryInterface;
 use App\Http\Requests\Shop\UserRequest;
+
 use Illuminate\Support\Facades\Redis;
+
 
 class UserController extends Controller
 {
@@ -24,19 +28,37 @@ class UserController extends Controller
         return $this->userRepository->showRegisterForm();
     }
 
+
     public function register(UserRequest $request)
     {
-       return $this->userRepository->register($request);
+       $this->userRepository->register($request);
+       return redirect('/shop');
     }
-    
 
-    
-
-    public function login()
+    public function showLoginForm()
     {
-        return Inertia::render('Shop/Login');
+        return $this->userRepository->showLoginForm();
+    }
+    
+
+    
+
+    public function loginUser(Request $request)
+    {
+        return $this->userRepository->login($request); 
     }
 
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/shop');
+    }
 
 
     public function testing()

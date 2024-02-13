@@ -7,40 +7,52 @@ import TextInput from '@/Components/TextInput';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/react';
+import axios from 'axios';
+import { checkUserLoggedIn } from '@/Functions/LoggedInUser';
 
 import {  useDispatch, useSelector } from 'react-redux';
 import { registerSuccess, registerFailure } from '@/Redux/Actions/AuthAction';
+import store from '@/Redux/Store';
 
 export default function Register() {
 
-  // const[data, setData] = useState({
-  //   'name': '', 
-  //   'email' : '',
-  //   'confirmEmail'  : '',
-  //   'password' : '',
-  //   'confirmPassword' : '',
-  //   'type' : 'customer'
-  // })
+
 
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-});
-
-useEffect(() => {
-  return () => {
-      reset('password', 'password_confirmation');
-  };
-}, []);
-
-
-  const dispatch = useDispatch(); //calling the action
-  const auth = useSelector(state => state.auth); //data from state
-
+    type: 'customer'
+  });
  
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
 
+  
+  checkUserLoggedIn(dispatch)
+
+//  useEffect(() => {
+//   return () => {
+//       reset('password', 'password_confirmation');
+//   };
+//  }, []);
+
+
+   //calling the action
+   //data from state
+
+//   const listener = () => {
+//     console.log('Store state updated:', store.getState());
+//     // Perform UI updates or side effects based on the new state
+// };
+
+// // Subscribe the listener to the store
+//  const unsubscribe = store.subscribe(listener);
+  
+//   unsubscribe();
+  
+  
     function handleInput(e)
     {
       e.preventDefault();
@@ -51,16 +63,15 @@ useEffect(() => {
     const handleSubmit = async(e) => 
     {
       e.preventDefault();
+      console.log(data);
       try{
-        console.log(data);
-        const response = await post('/shop/register', data)
-        
-        // dispatch(registerSuccess())
+        await post('/shop/register', data);
       }
       catch(error)
       {
-        console.error('Error fetching data:', error);
+        console.error(error);
       }
+       
     }
 
    
@@ -70,6 +81,7 @@ useEffect(() => {
   return (
     
     <Layout>
+     
     <div className="flex justify-center">
       <div>
          <form className="mb-8 p-5 w-500" onSubmit={(e) => handleSubmit(e)}>
@@ -107,7 +119,7 @@ useEffect(() => {
     </form>
     <p className="mt-10 text-center text-sm text-gray-500">
       Already a user? 
-      <a href={route('shop.user.login')} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Login</a>
+      <a href={route('shop.user.showLogin')} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Login</a>
     </p>
       </div>
    </div>

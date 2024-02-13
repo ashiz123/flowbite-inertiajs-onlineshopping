@@ -43,4 +43,30 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function isCustomer()
+    {
+        return $this->type === 'customer';
+    }
+
+
+    public function isSeller()
+    {
+        return $this->type === 'seller';
+    }
+
+
+    // protected $appends = [
+    //     'permissions'
+    // ];
+
+    // public function getPermissionsAttribute()
+    // {
+    //     return [
+    //         'products' => [
+    //             'create' => $this->can('products.createProduct'),
+    //         ],
+    //     ];
+    // }
 }

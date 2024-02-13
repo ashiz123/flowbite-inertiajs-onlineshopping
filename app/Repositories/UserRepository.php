@@ -4,7 +4,10 @@ namespace App\Repositories;
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use App\Models\User;
 
@@ -18,24 +21,45 @@ class UserRepository implements UserRepositoryInterface
     public function register($request)
     {
         
-       $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' =>Hash::make($request->password)
-       ]);
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
 
-       return $user;
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => $request->type
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        
     }
 
 
     public function showLoginForm()
     {
-        
+        return Inertia::render('Shop/Login');
     }
 
-    public function login()
+    public function login($request)
     {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
+        if(Auth::attempt($credentials))
+        {
+            $request->session()->regenerate();
+            return Auth()->user();
+        }
     }
 
     public function logout()

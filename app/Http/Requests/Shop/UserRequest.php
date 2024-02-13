@@ -4,6 +4,7 @@ namespace App\Http\Requests\Shop;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
+use Illuminate\Validation\Rules;
 
 class UserRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required|string|max:55',
             'email' => 'required|string|email|max:255|unique:'.User::class,
-            'password' => 'required'
+            'password' => ['required', 'confirmed', Rules\Password::defaults()]
         ];
     }
 }

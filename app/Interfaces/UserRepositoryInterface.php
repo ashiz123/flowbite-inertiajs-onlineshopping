@@ -12,7 +12,7 @@ interface UserRepositoryInterface
 
     public function showLoginForm();
 
-    public function login();
+    public function login($request);
 
     public function logout();
 

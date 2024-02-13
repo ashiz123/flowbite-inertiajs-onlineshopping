@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OptionController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\TestController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -46,7 +47,7 @@ Route::get('/', function () {
 });
 
 //profile
-Route::middleware('auth')->group(function () {
+Route::middleware('auth.seller')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -55,13 +56,17 @@ Route::middleware('auth')->group(function () {
 
 
 //dashboard route
-Route::middleware(['auth', 'verified'])->prefix('dashboard')->controller(DashboardController::class)->group(function(){
+Route::middleware(['auth.seller', 'verified'])->prefix('dashboard')->controller(DashboardController::class)->group(function(){
     Route::get('', 'index')->name('dashboard');
 });
 
+// Route::prefix('profile')->controller(ProfileController::class->group(function(){
+    
+// }))
+
 
 // category 
-Route::middleware('auth')->prefix('category')->controller(CategoryController::class)->group(function(){
+Route::middleware('auth.seller')->prefix('category')->controller(CategoryController::class)->group(function(){
     Route::get('/', 'index')->name('category');
     Route::get('/create', 'createCategory')->name('category_create');
     Route::post('/store', 'storeCategory')->name('category_store');
@@ -73,7 +78,7 @@ Route::middleware('auth')->prefix('category')->controller(CategoryController::cl
 
 
 //product 
-Route::middleware('auth')->prefix('product')->controller(ProductController::class)->group(function(){
+Route::middleware('auth.seller')->prefix('product')->controller(ProductController::class)->group(function(){
     Route::get('/', 'index')->name('product.index');
     Route::get('/create', 'createProduct')->name('product.create');
     Route::post('/store', 'storeProduct')->name('product.store');
@@ -87,7 +92,7 @@ Route::middleware('auth')->prefix('product')->controller(ProductController::clas
 
 
 //option
-Route::middleware('auth')->prefix('option')->controller(OptionController::class)->group(function(){
+Route::middleware('auth.seller')->prefix('option')->controller(OptionController::class)->group(function(){
     Route::get('/create', 'create')->name('option.create');
     Route::post('/store', 'store' )->name('option.store');
     Route::get('/show/{id}', 'show')->name('option.show');
@@ -100,7 +105,7 @@ Route::middleware('auth')->prefix('option')->controller(OptionController::class)
 
 
 //orders
-Route::middleware('auth')->prefix('orders')->controller(OrderController::class)->group(function(){
+Route::middleware('auth.seller')->prefix('orders')->controller(OrderController::class)->group(function(){
     Route::get('', 'index')->name('orders.index');
 });
 //end orders

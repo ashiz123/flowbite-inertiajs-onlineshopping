@@ -11,8 +11,11 @@ class HomepageController extends Controller
 {
    public function index()
    {
+      $loggedInUser = Auth()->user();
+      
+     
     // $product = Product::with('variants', 'category', 'photo')->find($id);
      $products = Product::with('variants', 'category', 'photo')->get();
-     return Inertia::render('Shop/Index', ['products' => $products]);
+     return Inertia::render('Shop/Index', ['products' => $products , 'auth_user' => $loggedInUser]);
    }
 }

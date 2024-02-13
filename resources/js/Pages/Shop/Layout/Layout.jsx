@@ -5,7 +5,7 @@ import Nav from './Nav';
 import Footer from './Footer';
 import { initFlowbite } from 'flowbite'
 
-const Layout = ({ children }) => {
+const Layout = ({ children} ) => {
   
   initFlowbite();
 

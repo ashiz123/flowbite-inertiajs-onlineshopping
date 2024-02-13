@@ -19,4 +19,4 @@ newOptions.map((option, i) => {
       <div>  <Button  color="failure" >Remove</Button></div>
       </div>
     )
-  })}
+  })
