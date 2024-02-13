@@ -76,15 +76,14 @@ export default function Navigation({auth_user}) {
         <div className="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
 
          {
-            props.auth_user   ? 
-            <button className='blue' onClick = {logout}>{props.auth_user.name} Logout</button> 
+            props.auth.user   ? 
+            <button className='blue' onClick = {logout}>{props.auth.user.name} Logout</button> 
             :
-             window.location.pathname !== '/shop/show-register' && window.location.pathname !== '/shop/show-login' ?
             <>
             <a href= {route('shop.user.showLogin')} className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Login</a>
             <a href= {route('shop.user.showRegister')} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sign up</a>
             </>
-            : '' }
+             }
 
 
             <button data-collapse-toggle="mega-menu" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mega-menu" aria-expanded="false">
