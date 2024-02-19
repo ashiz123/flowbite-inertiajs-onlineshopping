@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 
 export default function Index({products}) {
    
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   
   //checking either page logged in or not
-  checkUserLoggedIn(dispatch)
+  // checkUserLoggedIn(dispatch)
   
   
   function productOverview(id){

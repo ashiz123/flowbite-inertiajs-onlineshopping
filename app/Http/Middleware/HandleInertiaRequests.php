@@ -39,6 +39,9 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+
+            'cart'  => array_values($request->session()->get('cart', []))
+             
             
 
 

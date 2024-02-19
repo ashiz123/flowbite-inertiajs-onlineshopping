@@ -1,10 +1,60 @@
-import React from 'react'
+import React, {useReducer, useState} from 'react'
 import Layout from './Layout/Layout'
+import { router, usePage } from '@inertiajs/react';
+import axios from 'axios';
 
 
 export default function ProductOverview({product}) {
 
+  // const { props } = usePage();
+  // console.log(props)
+  
   const imagePath = '/storage/' + product.photo.path
+ 
+
+
+
+const CartReducer = (state, action) => {
+    switch (action.type) {
+      case 'ADD_ITEM':
+        return { ...state, items: action.payload};
+        case 'REMOVE_ITEM':d
+        console.log('remove item from cart')
+        return ;
+      default:
+         return state;
+    }
+  };
+
+ 
+
+  
+
+  
+ 
+
+ 
+
+
+  const addItemToCart = async(e) =>
+  {
+   
+    e.preventDefault();
+    console.log(product);
+    try{
+      await axios.post('/shop/add-item-to-cart', product, imagePath ).then(function(response){
+        console.log(response);
+        window.location.reload(false);
+      })
+      
+     }
+    catch(error)
+    {
+      console.error(error);
+    }
+    
+    
+  }
 
   return (
     <Layout class = "m-4"> 
@@ -225,7 +275,7 @@ export default function ProductOverview({product}) {
               </fieldset>
             </div>
   
-            <button type="submit" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
+            <button type="submit" onClick={addItemToCart} class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
           </form>
         </div>
   

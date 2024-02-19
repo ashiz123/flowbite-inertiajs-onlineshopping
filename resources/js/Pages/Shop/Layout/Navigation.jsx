@@ -1,61 +1,76 @@
 import React, {useEffect, useState} from 'react'
 import { Navbar } from 'flowbite-react';
-import { Link ,router, usePage} from '@inertiajs/react'
-import { useDispatch, useSelector} from 'react-redux';
-import { loggedInUser } from '@/Functions/LoggedInUser';
-import { logoutSuccess } from '@/Redux/Actions/AuthAction';
-import { logoutUser } from '@/Functions/LogoutUser';
-import axios from 'axios';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {  HiShoppingBag,} from 'react-icons/hi';
+import { router, usePage} from '@inertiajs/react';
+import Cart from '../Cart';
+
+
+// import { useDispatch, useSelector} from 'react-redux';
+// import { loggedInUser } from '@/Functions/LoggedInUser';
+// import { logoutSuccess } from '@/Redux/Actions/AuthAction';
+// import { logoutUser } from '@/Functions/LogoutUser';
 
 
 
-export default function Navigation({auth_user}) {
+
+export default function Navigation() {
 
     const { props, setData, setPage } = usePage();
+    const [slideOn, setSlideOn] = useState(false);
+
+    const [slideOver, setSlideOver] = useState({
+        background: 'opacity-0',
+        panel : ' translate-x-full'
+    });
 
 
-  
-    
-
-    // const customer_auth = useSelector(state => state.auth); //data from state
-    // const dispatch = useDispatch();
-     
-    const token = localStorage.getItem('userToken');
+    const [cart, setCart] = useState({
+        'product_name' : '',
+        'quantity' : '',
+        'price' : ''
+    })
 
 
-    const headers = {
-        'Accept' : 'application/json',
-        'Authorization': `Bearer ${token}`
-    }
-
-    
-
-   
-  
-    
-//   auth.sanctum logout
-    // function logout(e)
-    // {
-    //     e.preventDefault();
-    //     axios.delete('/api/logout', {headers})
-    //       .then((response) => {
-
-    //         localStorage.setItem('userToken', '');
-    //         dispatch(logoutSuccess());
-    //       })
-          
-    //       .catch((error) => {
-    //         // Handle error
-    //         console.error('Error:', error);
-    //       });
-        
-    //  }
+      
 
 
-    const logout = async (e) => {
-        e.preventDefault();
-        await router.post('/shop/logout');
+
+        function closeSlideOver()
+        {
+            setSlideOver({...slideOver, 
+                background: ' opacity-0',
+                panel: 'translate-x-full',
+            });
+            setSlideOn(false);
+            
         }
+
+
+        function openSlideOver(e)
+        {
+            // e.stopPropagation();
+            console.log('open slide over');
+            setSlideOn(true);
+            setSlideOver({...slideOver, 
+                background: ' opacity-100',
+                panel: 'translate-x-0',
+            });
+           
+        }
+
+
+
+         function addItemToCart(e)
+        {
+            e.preventDefault();
+            
+        }
+
+        const logout = async (e) => {
+            e.preventDefault();
+            await router.post('/shop/logout');
+            }
 
    
    
@@ -77,13 +92,25 @@ export default function Navigation({auth_user}) {
 
          {
             props.auth.user   ? 
-            <button className='blue' onClick = {logout}>{props.auth.user.name} Logout</button> 
+            <>
+            <button className='blue' onClick = {logout}>{props.auth.user.name} </button>
+            <button onClick={(e) => openSlideOver(e)}>
+            <HiShoppingBag />
+            </button>
+            {
+                slideOn &&
+                <Cart closeSlideOver = {closeSlideOver}  slideOver = {slideOver} style ={{zIndex: "auto"}}/>
+            }
+            
+            </>
+             
             :
             <>
             <a href= {route('shop.user.showLogin')} className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Login</a>
             <a href= {route('shop.user.showRegister')} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Sign up</a>
             </>
              }
+            
 
 
             <button data-collapse-toggle="mega-menu" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mega-menu" aria-expanded="false">
