@@ -1,0 +1,13 @@
+.slide-over-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 300px; /* Adjust width as needed */
+    background-color: white;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in-out;
+  }
+
+
+  
