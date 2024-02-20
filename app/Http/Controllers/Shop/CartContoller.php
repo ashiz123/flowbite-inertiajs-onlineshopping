@@ -20,6 +20,7 @@ class CartContoller extends Controller
         $product = Product::find($request->id);
        
         $quantity = 1;
+        $count =0;
        
 
         if (!$product) {
@@ -31,6 +32,7 @@ class CartContoller extends Controller
         if (array_key_exists($itemId, $cart)) {
             // If the item exists, increase its quantity
             $cart[$itemId]['quantity'] += $quantity;
+            $count= $count++;
         } else {
             // If the item doesn't exist, add it to the cart
             $cart[$itemId] = [
@@ -42,10 +44,11 @@ class CartContoller extends Controller
                 'image' => $product->photo->path
                 // You can add other item details here like name, price, etc.
             ];
+            $count = $count++;
         }
 
         $request->session()->put('cart', $cart);
-        Log::info($cart);
+        Log::info($count);
         return $cart;
        
 

@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Log;
+
 
 class IsUserSeller
 {
@@ -17,7 +19,7 @@ class IsUserSeller
     {
         if(!auth()->check() || auth()->user()->type !== 'seller')
         {
-         abort( 403, 'User is not seller. Unauthorized');
+            abort( 403, 'User is not seller. Unauthorized');
         }
        
        return $next($request);

@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
 
-            'cart'  => array_values($request->session()->get('cart', []))
+            'carts'  => array_values($request->session()->get('cart', []))
              
             
 

@@ -16,8 +16,13 @@ import Cart from '../Cart';
 
 export default function Navigation() {
 
-    const { props, setData, setPage } = usePage();
+    const {auth, carts} = usePage().props;
     const [slideOn, setSlideOn] = useState(false);
+
+    
+
+    const totalQuantity = carts.reduce((total, carts) => total + carts.quantity, 0);
+    
 
     const [slideOver, setSlideOver] = useState({
         background: 'opacity-0',
@@ -49,7 +54,6 @@ export default function Navigation() {
 
         function openSlideOver(e)
         {
-            // e.stopPropagation();
             console.log('open slide over');
             setSlideOn(true);
             setSlideOver({...slideOver, 
@@ -91,12 +95,21 @@ export default function Navigation() {
         <div className="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
 
          {
-            props.auth.user   ? 
+            auth.user   ? 
             <>
-            <button className='blue' onClick = {logout}>{props.auth.user.name} </button>
-            <button onClick={(e) => openSlideOver(e)}>
-            <HiShoppingBag />
-            </button>
+            <button className='blue' onClick = {logout}>{auth.user.name} </button>
+            <button onClick={(e) => openSlideOver(e)} class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            
+               <HiShoppingBag />
+                
+                <span class="inline-flex items-center justify-center w-4 h-4 ms-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
+                {totalQuantity}
+                </span>
+                </button>
+
+            
+
+
             {
                 slideOn &&
                 <Cart closeSlideOver = {closeSlideOver}  slideOver = {slideOver} style ={{zIndex: "auto"}}/>
