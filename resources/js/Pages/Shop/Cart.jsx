@@ -5,21 +5,18 @@ import { usePage } from '@inertiajs/react';
 
 export default function Cart({slideOver, closeSlideOver}) {
 
+  const { carts } = usePage().props;
+  const totalAmount = carts.reduce((total, carts) => total + carts.price * carts.quantity, 0);
   
-
- 
-  const { cart } = usePage().props;
-  const [sessionValue, setSessionValue] = useState(cart);
-  console.log(sessionValue);
-
   
-
-
-    
-
-    function closeSlide()
+  function closeSlide()
     {
         return closeSlideOver();
+    }
+
+    function checkout()
+    {
+       console.log('checkout');
     }
 
   
@@ -58,7 +55,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                       
                       {
-                        sessionValue.map((item, i) => {
+                        carts.map((item, i) => {
                           const imagePath = '/storage/' + item.image
                           return(
                             <span key = {i}> 
@@ -73,9 +70,11 @@ export default function Cart({slideOver, closeSlideOver}) {
                               <h3>
                                 <a href="#">{item.name}</a>
                               </h3>
-                              <p className="ml-4">${item.price}.00</p>
+                              <p className="ml-4">${item.price * item.quantity}.00</p>
+                              
                             </div>
                             <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                            <p className=" text-sm text-gray-500">{item.price}/unit</p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">
                             <p className="text-gray-500">Qty {item.quantity}</p>
@@ -104,11 +103,11 @@ export default function Cart({slideOver, closeSlideOver}) {
               <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                 <div className="flex justify-between text-base font-medium text-gray-900">
                   <p>Subtotal</p>
-                  <p>$262.00</p>
+                  <p>${totalAmount}.00</p>
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                 <div className="mt-6">
-                  <a href="#" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+                  <a onClick = {checkout} href="#" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                   <p>
