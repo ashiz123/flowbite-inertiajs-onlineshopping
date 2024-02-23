@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Shop\HomepageController;
 use App\Http\Controllers\Shop\ProductController;
 use App\Http\Controllers\Shop\UserController;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\Shop\ProfileController;
 
 
 
@@ -37,8 +37,11 @@ Route::get('product/{id}/overview', [ProductController::class, 'show'])->name('s
 Route::middleware(['auth.customer'])->group(function(){
    Route::post('/logout', [UserController::class, 'logout'])->name('shop.user.logout');
    Route::post('/add-item-to-cart', [CartContoller::class, 'addItemToCart'])->name('cart.add');
-});
+ //profile route start
+  Route::get('/profile', [ProfileController::class, 'create'])->name('shop.profile.create');
 
+  
+});
 
 
 
