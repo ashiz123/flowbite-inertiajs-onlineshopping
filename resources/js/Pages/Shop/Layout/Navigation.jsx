@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { Navbar } from 'flowbite-react';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {  HiShoppingBag,} from 'react-icons/hi';
-import { router, usePage} from '@inertiajs/react';
+import { router, usePage, Link} from '@inertiajs/react';
 import Cart from '../Cart';
 
 
@@ -18,6 +18,8 @@ export default function Navigation() {
 
     const {auth, carts} = usePage().props;
     const [slideOn, setSlideOn] = useState(false);
+    const [toggle , setToggle] = useState(false);
+    const [megaMenu , setMegaMenu] = useState(false);
 
     
 
@@ -73,7 +75,20 @@ export default function Navigation() {
 
         const logout = async (e) => {
             e.preventDefault();
-            await router.post('/shop/logout');
+            if (window.confirm("Do you want to logout ?")) {
+                await router.post('/shop/logout');
+              }
+           
+            }
+
+            function handleDropDown()
+            {
+                setToggle(!toggle);
+            }
+
+            function handleMegaMenu()
+            {
+                setMegaMenu(!megaMenu)
             }
 
    
@@ -97,8 +112,34 @@ export default function Navigation() {
          {
             auth.user   ? 
             <>
-            <button className='blue' onClick = {logout}>{auth.user.name} </button>
-            <button onClick={(e) => openSlideOver(e)} class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            
+
+    <button id="dropdownDefaultButton" onClick={handleDropDown} className="  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" >{auth.user.name} 
+    <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+    </svg>
+    </button>
+    {/* set inset: "30%" from small screen */}
+    <div id="dropdown" style={{ inset :'7% auto auto auto'}} class= {`z-10 absolute ${toggle ? "block " : "hidden"} p bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}>
+    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+      <li>
+        {/* <a href= {route('shop.profile.create')} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a> */}
+        <Link href= {route('shop.profile.create')} class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"> Profile </Link>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Orders</a>
+      </li>
+      <li>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick = {logout}>Sign out</a>
+      </li>
+    </ul>
+    </div>
+
+
+              <button onClick={(e) => openSlideOver(e)} class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             
                <HiShoppingBag />
                 
@@ -136,15 +177,16 @@ export default function Navigation() {
         <div id="mega-menu" className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1">
             <ul className="flex flex-col mt-4 font-medium md:flex-row md:mt-0 md:space-x-8 rtl:space-x-reverse">
                 <li>
-                    <a href="#" className="block py-2 px-3 text-blue-600 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-blue-500 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
+                    <a href={route('shop.index')}className="block py-2 px-3 text-blue-600 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-blue-500 md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700" aria-current="page">Home</a>
                 </li>
                 <li>
-                    <button id="mega-menu-dropdown-button" data-dropdown-toggle="mega-menu-dropdown" className="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
+                {/* data-dropdown-toggle="mega-menu-dropdown"  */}
+                    <button id="mega-menu-dropdown-button" onClick={handleMegaMenu} className="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
                         Company <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
   </svg>
                     </button>
-                    <div id="mega-menu-dropdown" className="absolute z-10 grid hidden w-auto grid-cols-2 text-sm bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 md:grid-cols-3 dark:bg-gray-700">
+                    <div id="mega-menu-dropdown" className={`absolute z-10 grid  ${megaMenu ? "block " : "hidden"} w-auto grid-cols-2 text-sm bg-white border border-gray-100 rounded-lg shadow-md dark:border-gray-700 md:grid-cols-3 dark:bg-gray-700`}>
                         <div className="p-4 pb-0 text-gray-900 md:pb-4 dark:text-white">
                             <ul className="space-y-4" aria-labelledby="mega-menu-dropdown-button">
                                 <li>

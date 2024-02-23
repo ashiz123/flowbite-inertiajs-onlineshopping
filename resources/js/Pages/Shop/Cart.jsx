@@ -16,7 +16,7 @@ export default function Cart({slideOver, closeSlideOver}) {
 
     function checkout()
     {
-       console.log('checkout');
+       console.log('checkout works');
     }
 
   
@@ -31,10 +31,7 @@ export default function Cart({slideOver, closeSlideOver}) {
     <div className="fixed inset-0 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         <div   className= {`pointer-events-auto fixed inset-y-0 right-0 flex max-w-full pl-10 transform transition ease-in-out duration-500 sm:duration-700  ${slideOver.panel}`}>
-          
-         
-
-          <div className="pointer-events-auto w-screen max-w-md">
+           <div className="pointer-events-auto w-screen max-w-md">
             <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
               <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                 <div className="flex items-start justify-between">
@@ -55,7 +52,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                       
                       {
-                        carts.map((item, i) => {
+                        carts?.map((item, i) => {
                           const imagePath = '/storage/' + item.image
                           return(
                             <span key = {i}> 
@@ -74,7 +71,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                               
                             </div>
                             <p className="mt-1 text-sm text-gray-500">Salmon</p>
-                            <p className=" text-sm text-gray-500">{item.price}/unit</p>
+                            <p className=" text-sm text-gray-500">£{item.price}/unit</p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">
                             <p className="text-gray-500">Qty {item.quantity}</p>
@@ -90,11 +87,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                         })
                        
                       }
-                      
-
-                      
-  
-                      {/* <!-- More products... --> */}
+                     {/* <!-- More products... --> */}
                     </ul>
                   </div>
                 </div>

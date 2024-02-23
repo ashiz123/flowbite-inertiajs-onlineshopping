@@ -28,7 +28,10 @@ const handleSubmit = async(e) =>
     {
       e.preventDefault();
       try{
-         await post('/shop/login', data);
+         await post('/shop/login', data).then(function(){
+          console.log('User logged in');
+         })
+         
         
       }
       catch(error)

@@ -10,7 +10,7 @@ export default function Index({products}) {
   
   //checking either page logged in or not
   // checkUserLoggedIn(dispatch)
-  
+  // const imagePath = '/storage/images/blazzer.jpeg' ;
   
   function productOverview(id){
     router.get('/shop/product/' + id + '/overview');
