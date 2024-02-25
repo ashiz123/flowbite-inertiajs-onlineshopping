@@ -14,4 +14,9 @@ class ProfileController extends Controller
         return Inertia::render('Shop/Profile/Profile',['address_api' => $apiUrl] );
     
     }
+
+    public function test()
+    {
+        return Inertia::render('Shop/Profile/StepperProfile');
+    }
 }

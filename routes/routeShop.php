@@ -44,6 +44,9 @@ Route::middleware(['auth.customer'])->group(function(){
 });
 
 
+Route::get('/testing', [ProfileController::class, 'test']);
+
+
 
 
 
