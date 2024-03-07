@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react';
-import { usePage } from '@inertiajs/react';
+import { usePage, router } from '@inertiajs/react';
+
 
 
 
@@ -16,7 +17,7 @@ export default function Cart({slideOver, closeSlideOver}) {
 
     function checkout()
     {
-       console.log('checkout works');
+       router.get('/shop/checkout/create');
     }
 
   

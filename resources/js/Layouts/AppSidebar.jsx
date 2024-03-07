@@ -70,7 +70,7 @@ export default function AppSidebar() {
             </Sidebar.Item>
             </Sidebar.Collapse>
 
-           <Sidebar.Item href="#" icon={HiShoppingBag}>
+           <Sidebar.Item as={Link} href={route('orders.index')} icon={HiShoppingBag}>
               Orders
             </Sidebar.Item>
 

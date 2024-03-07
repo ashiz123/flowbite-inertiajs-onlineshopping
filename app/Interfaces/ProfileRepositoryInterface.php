@@ -6,5 +6,10 @@ use Illuminate\Http\Request;
 
 interface ProfileRepositoryInterface
 {
-    public function create();
+    public function storeAddress();
+
+    public function storeContact();
+
+    public function storePayment();
+
 }

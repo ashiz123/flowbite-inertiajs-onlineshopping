@@ -1,18 +1,30 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Layout from '../Layout/Layout';
 
 import Contact from './Contact';
-import UserInfo from './UserInfo';
 import PaymentInfo from './PaymentInfo';
+import Address from '../Checkout/Address';
 
 function Stepper() {
   const [currentStep, setCurrentStep] = useState(1);
 
+  useEffect(() => {
+    if(currentStep == 1)
+    {
+      console.log('address');
+    }else if (currentStep == 2)
+    {
+      console.log('conatct');
+    }else{
+      console.log('payment');
+    }
+  })
+
   const handleNext = () => {
     setCurrentStep(prevStep => prevStep + 1);
-  };
+   };
 
   const handleBack = () => {
     setCurrentStep(prevStep => prevStep - 1);
@@ -22,7 +34,7 @@ function Stepper() {
     <Layout>
     <div className='ml-5 text-2xl'>
       <h2 className='text-green-500'>Step {currentStep}</h2>
-      {currentStep === 1 && <UserInfo />}
+      {currentStep === 1 && <Address />}
       {currentStep === 2 && <Contact />}
       {currentStep === 3 && <PaymentInfo />}
       <div>
@@ -38,32 +50,4 @@ function Stepper() {
     </Layout>
   );
 }
-
-function Step1() {
-  return (
-    <div>
-      <h3>User Detail</h3>
-      <p>This is step 1 content.</p>
-    </div>
-  );
-}
-
-function Step2() {
-  return (
-    <div>
-      <h3>User Address</h3>
-      <p>This is step 2 content.</p>
-    </div>
-  );
-}
-
-function Step3() {
-  return (
-    <div>
-      <h3>User Contact</h3>
-      <p>This is step 3 content.</p>
-    </div>
-  );
-}
-
 export default Stepper;

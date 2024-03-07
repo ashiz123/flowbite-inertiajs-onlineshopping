@@ -84,7 +84,7 @@ export default function Index({products}) {
 
   <hr className="w-8 h-8 mx-auto my-8 bg-gray-200 border-0 rounded md:my-12 dark:bg-gray-700"></hr>
   <center>
-  <h1 className="mb-4  text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Upgrade your living - <span className="text-blue-600 dark:text-blue-500">Everything you looking for</span> </h1>
+  <h1 className="mb-4  text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Bunch your style - <span className="text-blue-600 dark:text-blue-500">Everything you looking for</span> </h1>
   </center>
 
 
