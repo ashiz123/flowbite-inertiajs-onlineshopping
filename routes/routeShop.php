@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController; //this is breeze controller
 use App\Http\Controllers\Shop\CartContoller;
+use App\Http\Controllers\Shop\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -38,13 +39,20 @@ Route::middleware(['auth.customer'])->group(function(){
    Route::post('/logout', [UserController::class, 'logout'])->name('shop.user.logout');
    Route::post('/add-item-to-cart', [CartContoller::class, 'addItemToCart'])->name('cart.add');
  //profile route start
-  Route::get('/profile', [ProfileController::class, 'create'])->name('shop.profile.create');
 
+  // Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');
+  // Route::post('/profile/address/store', [ProfileController::class, 'store'])->name('profile.address.store');
+  // Route::post('/profile/contact/store', [ProfileController::class, 'store'])->name('profile.address.store');
+  // Route::post('/profile/payment/store', [ProfileController::class, 'store'])->name('profile.address.store');
+
+
+  //checkout start
+  Route::get('/checkout/create', [CheckoutController::class, 'create'])->name('shop.checkout.create');
+  Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('shop.checkout.process');
   
 });
 
 
-Route::get('/testing', [ProfileController::class, 'test']);
 
 
 

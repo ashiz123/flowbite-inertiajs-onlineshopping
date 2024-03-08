@@ -18,7 +18,7 @@ const Layout = ({ children} ) => {
           <nav>
             <Navigation />
           </nav>
-          <main className='mt-5'>
+          <main className='mt-5 container mx-auto'>
             {children}
           </main>
           {/* <footer>

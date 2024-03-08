@@ -34,10 +34,6 @@ Route::middleware('auth:sanctum')->group(function(){
 
 
 
-
-
-
-
 Route::get('/option/{id}', [OptionController::class, 'show'])->name('option.show');
 
 

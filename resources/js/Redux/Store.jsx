@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { AuthReducer } from '@/Redux/Reducers/AuthReducer';
+// import { AuthReducer } from '@/Redux/Reducers/AuthReducer';
+import CheckoutReducer from './Reducers/CheckoutReducer'; 
 // import { composeWithDevTools } from 'redux-devtools-extension';
 // import { TestingReducer } from '@/Reducers/TestingReducer';
 
@@ -9,7 +10,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_D
 
 const store = configureStore({
     reducer: {
-      auth : AuthReducer
+      // auth : AuthReducer
+      checkout: CheckoutReducer
     },
     
 }, composeEnhancers);

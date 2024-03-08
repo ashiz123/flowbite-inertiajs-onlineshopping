@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../Layout/Layout';
-import UserInfo from './UserInfo';
+import UserInfo from './AddressInfo';
 
 
 export default function Profile() {
