@@ -1,15 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { usePage } from '@inertiajs/react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import axios from 'axios';
 import { dummyData } from './dummyData';
+import AddedAddress from './AddedAddress';
 
-export default function Address() {
+
+// function mapStateToProps(state) {
+//   const { checkout } = state
+//   return { 
+//    address : checkout.address,
+//    }
+// }
+
+
+
+
+ function Address(props) {
+
+    console.log(props.address);
 
     const { address_api } = usePage().props;
 
     const [suggestions, setSuggestions] = useState(null);
     const [selectedSuggest, setSelectedSuggest] = useState('');
+    const [addressAdd, setAddressAdd] = useState(false);
     const [getInput, setGetInput] = useState({
       'firstaddress' : '', 
       'housenumber' : '',
@@ -19,6 +34,9 @@ export default function Address() {
       'postcode' : '',
       'country': ''
       })
+
+
+      
 
       const dispatch = useDispatch();
 
@@ -31,11 +49,13 @@ export default function Address() {
 useEffect(() => {
     if(selectedSuggest)
     {
+
       const fetchAddress = async() => {
         try{
           await axios.get(`https://api.getAddress.io/get/${selectedSuggest}?api-key=${address_api}`).then(function(response) {
           const addressInfo = response.data;
           setGetInput({...getInput, ['city'] : addressInfo.town_or_city,  ['reigion'] : addressInfo.county, ['postcode'] : addressInfo.postcode , ['housenumber'] : addressInfo.line_1, ['flatnumber'] : addressInfo.line_2, ['country']: addressInfo.country, ['building']: addressInfo.building_number});
+          
          
         })
         }
@@ -48,7 +68,7 @@ useEffect(() => {
 
       const addressInfo = dummyData;
       setGetInput({...getInput, ['city'] : addressInfo.town_or_city,  ['reigion'] : addressInfo.county, ['postcode'] : addressInfo.postcode , ['housenumber'] : addressInfo.line_1, ['flatnumber'] : addressInfo.line_2, ['country']: addressInfo.country, ['building']: addressInfo.building_number});
-
+      
       // fetchAddress();
       console.log('tsting');
       
@@ -89,6 +109,16 @@ useEffect(() => {
     function onAddAddressClick()
     {
       dispatch(addAddress())
+      setAddressAdd(true);
+      setGetInput({
+        'firstaddress' : '', 
+        'housenumber' : '',
+        'flatnumber': '',
+         'city' : '',
+        'reigion' : '',
+        'postcode' : '',
+        'country': ''
+        })
     }
 
 
@@ -103,7 +133,16 @@ useEffect(() => {
 
   return (
     <>
-    <h6 class="text-lg font-bold dark:text-white">ADDRESS</h6><br />
+    {
+      addressAdd &&
+      <>
+      <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        Address added successfully
+      </div>
+       <AddedAddress/>
+      </>
+    }
+    <h6 class="text-lg font-bold dark:text-white">Add new address</h6><br />
             <div className='col-span-2'>
              <label for="street-address" class=" text-sm font-medium leading-6 text-gray-900">
                  <b>Enter address automatically</b>
@@ -168,3 +207,6 @@ useEffect(() => {
     </>
   )
 }
+
+
+export default Address

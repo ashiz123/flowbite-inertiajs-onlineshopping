@@ -40,14 +40,15 @@ Route::middleware(['auth.customer'])->group(function(){
    Route::post('/add-item-to-cart', [CartContoller::class, 'addItemToCart'])->name('cart.add');
  //profile route start
 
-  Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');
-  Route::post('/profile/address/store', [ProfileController::class, 'store'])->name('profile.address.store');
-  Route::post('/profile/contact/store', [ProfileController::class, 'store'])->name('profile.address.store');
-  Route::post('/profile/payment/store', [ProfileController::class, 'store'])->name('profile.address.store');
+  // Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');
+  // Route::post('/profile/address/store', [ProfileController::class, 'store'])->name('profile.address.store');
+  // Route::post('/profile/contact/store', [ProfileController::class, 'store'])->name('profile.address.store');
+  // Route::post('/profile/payment/store', [ProfileController::class, 'store'])->name('profile.address.store');
 
 
   //checkout start
   Route::get('/checkout/create', [CheckoutController::class, 'create'])->name('shop.checkout.create');
+  Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('shop.checkout.process');
   
 });
 

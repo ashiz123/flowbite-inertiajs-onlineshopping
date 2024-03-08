@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {useDispatch } from 'react-redux';
+import {useDispatch, connect } from 'react-redux';
+import AddedPayment from './AddedPayment';
+
+
+
+
 
 export default function Payment() {
  const[paymentDetail, setPaymentDetail] = useState({
@@ -7,6 +12,7 @@ export default function Payment() {
     'expiry' : '',
     'cvc': ''
  })
+ const [addPayment , setAddPayment] = useState(false);
 
  const dispatch = useDispatch();
 
@@ -33,10 +39,28 @@ export default function Payment() {
  {
      e.preventDefault();
      dispatch(addPaymentDetail())
+     setAddPayment(true);
+     setPaymentDetail({
+        'cardnumber': '',
+        'expiry' : '',
+        'cvc': ''
+     })
  }
  
  return (
     <>
+    {
+        addPayment &&
+        <>
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+         Payment added
+        </div>
+
+        <AddedPayment />
+        </>
+    }
+
+
      <h6 className="text-lg font-bold dark:text-white">PAYMENT</h6><br />
     
     <div className="grid gap-6 mb-6 md:grid-cols-3">

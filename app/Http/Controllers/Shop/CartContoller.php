@@ -20,7 +20,7 @@ class CartContoller extends Controller
         $product = Product::find($request->id);
        
         $quantity = 1;
-        $count =0;
+        $count = 0;
        
 
         if (!$product) {
@@ -48,12 +48,11 @@ class CartContoller extends Controller
         }
 
         $request->session()->put('cart', $cart);
-        Log::info($count);
         return $cart;
        
-
-        
     }   
+
+    
 
     public function removeItemFromCart(Request $request)
     {

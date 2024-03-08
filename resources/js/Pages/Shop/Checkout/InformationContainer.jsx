@@ -6,27 +6,38 @@ import Payment from './Payment';
 import Address from './Address';
 import PersonalInformation from './PersonalInformation';
 import { connect} from 'react-redux';
+import axios from 'axios';
 
-function mapStateToProps(state) {
-  const { checkout } = state
-  return { 
-    personal: checkout.personal ,
-    address : checkout.address,
-    payment: checkout.payment
-  }
+function mapStateToProps(state)
+{
+   const {checkout} = state;
+   return {
+    payment : checkout.payment,
+    personal: checkout.personal,
+    address: checkout.address
+   }
 }
+
 
 
 function InformationContainer(props) {
 
 
-  
-  console.log(props);
-
-  function onSubmitForm(e)
+const onSubmitForm = async(e) =>
   {
     e.preventDefault();
-    console.log('submit form');
+    await axios.post('/shop/checkout/process',  {
+      auth: props.personal,
+      address: props.address,
+      payment: props.payment
+      })
+      .then(response => {
+          console.log('Order created:', response.data);
+      })
+      .catch(error => {
+          console.error('Error creating order:', error);
+      });
+   
   }
 
 
@@ -67,4 +78,4 @@ function InformationContainer(props) {
   );
 }
 
-export default connect(mapStateToProps)(InformationContainer)
+export default connect(mapStateToProps) (InformationContainer)
