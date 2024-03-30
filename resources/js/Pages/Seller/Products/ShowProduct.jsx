@@ -15,7 +15,7 @@ export default function ShowProduct({product}) {
  
   const [openModal, setOpenModal] = useState(false);
   const [variant, setVariant] = useState(null);
-  const fullPath = '/storage/' + product.photo.path
+  const fullPath = '/storage/' + product.photos[0].path
 
   function onClickVariant(variant)
   {

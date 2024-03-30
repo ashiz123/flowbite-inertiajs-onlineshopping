@@ -11,7 +11,7 @@ export default function Index({products}) {
   //checking either page logged in or not
   // checkUserLoggedIn(dispatch)
   // const imagePath = '/storage/images/blazzer.jpeg' ;
-  
+  console.log(products);
   function productOverview(id){
     router.get('/shop/product/' + id + '/overview');
   }
@@ -50,7 +50,7 @@ export default function Index({products}) {
   <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-6 xl:gap-x-8">
     {
       products.map(product => {
-        const imagePath = '/storage/' + product.photo.path
+        const imagePath = '/storage/' + product.photos[0].path
         return (
           <div className="group relative">
           <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">

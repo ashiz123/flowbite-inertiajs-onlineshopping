@@ -201,12 +201,34 @@ export default function AddOption({product}) {
         <TextInput type="file" accept="images/*" style={{ display: 'none' }} placeholder='image' name='avatar'  onChange={(e) =>handleFileChange(e)} ref={addFileInputRef}></TextInput>
         <div > <TextInput placeholder='Enter title' name='title' value={data.title} onChange={(e) => handleInput(e)}></TextInput></div>
         <div> <TextInput placeholder='SKU' name='sku' value={data.sku} onChange={(e) => handleInput(e)}></TextInput></div>
-        <div> <TextInput placeholder='Size' name='size' value={data.size} onChange={(e) => handleInput(e)}></TextInput></div>
-        <div> <TextInput placeholder='Color' name='color' value={data.color}  onChange={(e) => handleInput(e)}></TextInput></div>
+        {/* <div> <TextInput placeholder='Size' name='size' value={data.size} onChange={(e) => handleInput(e)}></TextInput></div> */}
+        {/* <div> <TextInput placeholder='Color' name='color' value={data.color}  onChange={(e) => handleInput(e)}></TextInput></div> */}
+        
+        <div><Select id="size" name='size' value={data.size} style={{ width:"100px" }}  onChange={(e) => handleInput(e)} required>
+        <option value= "">Size</option>
+        <option>L</option>
+        <option>M</option>
+        <option>S</option>
+        <option>XL</option>
+        <option>XXL</option>
+        </Select></div>
+
+        <div><Select id="color" placeholder="Color" name='color' value={data.color} onChange={(e) => handleInput(e)} style={{ width:"100px" }} required>
+        <option value = "">Color</option>
+        <option>Red</option>
+        <option>Orange</option>
+        <option>Green</option>
+        <option>Purple</option>
+        <option>Black</option>
+        <option>White</option>
+        <option>Yellow</option>
+        <option>Navy</option>
+        </Select></div>
+
         <div> <TextInput placeholder='Origin' name='origin' value={data.origin} onChange={(e) => handleInput(e)}></TextInput></div>
         <div> <TextInput placeholder='Type' name='type' value={data.type} onChange={(e) => handleInput(e)}></TextInput></div>
-        <div> <TextInput placeholder='Quantity' name='quantity' value={data.quantity}  onChange={(e) => handleInput(e)}></TextInput></div>
-        <div> <TextInput placeholder='Price' name='price' value={data.price} onChange={(e) => handleInput(e)}></TextInput></div>
+        <div> <TextInput placeholder='Quantity' name='quantity' type='number' value={data.quantity}  onChange={(e) => handleInput(e)}></TextInput></div>
+        <div> <TextInput placeholder='Price' name='price'type='number' value={data.price} onChange={(e) => handleInput(e)}></TextInput></div>
         
         </div>
     

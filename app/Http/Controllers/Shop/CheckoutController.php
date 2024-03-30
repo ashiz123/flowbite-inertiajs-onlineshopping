@@ -6,7 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Interfaces\CheckoutRepositoryInterface;
+use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use App\Models\UserAddress;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
@@ -21,13 +26,74 @@ class CheckoutController extends Controller
     public function create()
     {
         $apiUrl = env('GET_ADDRESS_API');
-        return Inertia::render('Shop/Checkout/Create' , ['address_api' => $apiUrl] );
+        $userAddress = UserAddress::where('user_id', Auth::user()->id)->first();
+        return Inertia::render('Shop/Checkout/Checkout' , 
+        [
+            'address_api' => $apiUrl,
+            'user_address' => $userAddress
+    ]);
     }
 
     public function process(Request $request)
     {
-       Log::info($request);
-       return $request;
+      
+    try{
+        DB::beginTransaction();
+        
+        $cartItems = $request->session()->get('cart', []);
+        $total_amount = $this->getTotalAmountOfOrder($cartItems);
+        
+        
+        $order = $this->checkoutRepositoryInterface->orderConfirm($request, $total_amount);
+
+        $this->checkoutRepositoryInterface->orderDetail($order, $cartItems);
+        Session::forget('cart');
+        
+        DB::commit();
+
+        // $currentDate = date('YmdHis');
+        return response()->json(['redirect_to' => "/shop/thankyou"], 200);
+    }
+
+    catch(\Exception $e)
+    {
+        DB::rollBack();
+        return "Transaction failed: " . $e->getMessage();
+    }
+
+   
+
+    }
+
+
+
+    public function getTotalAmountOfOrder($cartItems)
+    {
+        $total_amount = 0;
+        if($cartItems != null)
+        {
+           foreach ($cartItems as $ci)
+        {
+            $sub_total = $ci['quantity'] * $ci['price'];
+            $total_amount += $sub_total;
+        }
+        }   
+        return $total_amount;
+    }
+
+
+
+
+    public function checkoutSuccess()
+    {
+        return inertia::render('Shop/Checkout/Thankyou');
+    }
+
+
+
+    public function addAddress(Request $request)
+    {
+        $this->checkoutRepositoryInterface->addCheckoutAddress($request);
     }
 
     

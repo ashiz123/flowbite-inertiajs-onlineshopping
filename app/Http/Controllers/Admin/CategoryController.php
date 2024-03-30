@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 Use App\Models\Category;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -15,9 +16,10 @@ class CategoryController extends Controller
         $categories = Category::all();
         return Inertia::render('Seller/Category/Categories', ['categories' => $categories]);
     }
+    
     public function createCategory()
     {
-        $categories = Category::all();
+        $categories = Category::where('publish', 1)->latest()->get();
         return Inertia::render('Seller/Category/CreateCategory', ['categories' => $categories]);
     }
 
@@ -67,6 +69,19 @@ class CategoryController extends Controller
 
 
         
+    }
+
+    public function getParentByChild($parentId)
+    {
+        if($parentId != 0)
+        {
+            $parent = Category::where('id', $parentId)->first()->title;
+        }else {
+            $parent = null;
+        }
+      
+      
+      return $parent;
     }
 
     public function deleteCategory($id)

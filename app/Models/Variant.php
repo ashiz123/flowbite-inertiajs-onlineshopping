@@ -26,4 +26,16 @@ class Variant extends Model
     {
         return $this->hasOne(Photo::class);
     }
+
+
+    //distinct() function use to retrieve data for once if duplicated
+    public function ScopeSizesByColor($query, $color)
+    {
+        return $query->where('color', $color)->distinct()->pluck('size');
+    }
+
+    public function ScopeColorsBySize($query, $size)
+    {
+        return $query->where('size', $size)->distinct()->pluck('color');
+    }
 }

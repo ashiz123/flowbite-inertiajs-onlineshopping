@@ -1,129 +1,60 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import OrderDropDown from './OrderDropDown';
+import axios from 'axios';
+import { router } from '@inertiajs/react';
 
-import AppSidebar from '@/Layouts/AppSidebar';
-import Navigation from '@/Layouts/Navigation';
-import {Heading} from '@/Components/heading';
+export  function Order({order, status}) {
 
-export default function Order() {
-  return (
-    <> 
-    <Navigation />
-    <div className="flex">
-      <AppSidebar />
-    <div className=" flex-1 p-7 ">
-      <Heading>Orders</Heading>
-       
+    const [thisOrder, setThisOrder] = useState(order);
+   
+    console.log(order);
 
-<div class="relative overflow-x-auto">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-auto">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr><th scope="col" class="px-6 py-3">
-                    Id
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Product name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Email
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Variant
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Category
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Price
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Quantity
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Total
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Status
-                </th>
+   
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-               <td class="px-6 py-4">
-                    1
-                </td>
-                <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
-                </td>
-                <td class="px-6 py-4">
-                    ashizhamal@gmail.com
-                </td>
-                <td class="px-6 py-4">
-                    Silver
-                </td>
-                <td class="px-6 py-4">
-                    Laptop
-                </td>
-                <td class="px-6 py-4">
-                    $2999
-                </td>
-                <td class="px-6 py-4">
-                    25
-                </td>
-            </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4">
-                    2
-                </td>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Microsoft Surface Pro
-                </th>
-                <td class="px-6 py-4">
-                    ashizhamal@gmail.com
-                </td>
-                <td class="px-6 py-4">
-                    White
-                </td>
-                <td class="px-6 py-4">
-                    Laptop PC
-                </td>
-                <td class="px-6 py-4">
-                    $1999
-                </td>
-                <td class="px-6 py-4">
-                    2
-                </td>
-            </tr>
-            <tr class="bg-white dark:bg-gray-800">
-            <td class="px-6 py-4">
-                    3
-                </td>
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Magic Mouse 2
-                </th>
-                <td class="px-6 py-4">
-                    ashizhamal@gmail.com
-                </td>
-                <td class="px-6 py-4">
-                    Black
-                </td>
-                <td class="px-6 py-4">
-                    Accessories
-                </td>
-                <td class="px-6 py-4">
-                    $99
-                </td>
-                <td class="px-6 py-4">
-                    5
-                </td>
-            </tr>
-            
-        </tbody>
-    </table>
-</div>
+    const updateStatus = (data) => 
+    {
+       setThisOrder({...thisOrder, status : data})
+    }
 
-      </div>
-      </div>
-      </>
+
+    function showOrder(orderNumber)
+    {
+        router.get(`/orders/show/${orderNumber}`);
+    }
+   return (
+    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="px-6 py-4">
+               1
+           </td>
+           <td class="px-6 py-4">
+               {thisOrder.order_number}
+           </td>
+           <td class="px-6 py-4">
+               {thisOrder.customer.name}
+           </td>
+          
+           <td class="px-6 py-4">
+               {thisOrder.customer.email}
+           </td>
+          <td class="px-6 py-4">
+               {thisOrder.total_amounts}
+           </td>
+           <td class="px-6 py-4">
+               {thisOrder.status.title}
+           </td>
+           <td class="px-6 py-4">
+           <div class="flex flex-row ">
+           <div class="basis-1/2">
+           <button type="button" onClick={() => showOrder(thisOrder.order_number)} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</button>
+           </div>
+            <div class="basis-1/2">
+            <OrderDropDown selectedStatusId = {thisOrder.status.id} orderNumber = {thisOrder.order_number} changeCurrentStatus = {updateStatus} statuses = {status}/>
+            </div>
+            </div>
+          
+          
+           </td>
+           
+       </tr>
   )
 }
