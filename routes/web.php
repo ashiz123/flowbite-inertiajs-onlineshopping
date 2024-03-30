@@ -73,6 +73,7 @@ Route::middleware('auth.seller')->prefix('category')->controller(CategoryControl
     Route::get('/edit', 'editCategory')->name('category_edit');
     Route::match(['put', 'patch'], '/update/{id}', 'updateCategory')->name('category.update');
     Route::delete('/delete/{id}', 'deleteCategory')->name('delete.category');
+    Route::get('/parent/{parent_id}', 'getParentByChild')->name('category.parent_id');
 });
 // end category
 
@@ -105,10 +106,16 @@ Route::middleware('auth.seller')->prefix('option')->controller(OptionController:
 
 
 //orders
-Route::middleware('auth.seller')->prefix('orders')->controller(OrderController::class)->group(function(){
+    Route::middleware('auth.seller')->prefix('orders')->controller(OrderController::class)->group(function(){
     Route::get('', 'index')->name('orders.index');
+    Route::match(['put', 'patch'], '/status/update/{orNum}', 'updateStatus')->name('orders.status.update');
+    Route::get('/show/{id}', 'showOrder')->name('orders.show');
+    Route::get('/product/{id}' , 'showProductOfOrder')->name('orders.product');
 });
 //end orders
+
+
+
 
 
 

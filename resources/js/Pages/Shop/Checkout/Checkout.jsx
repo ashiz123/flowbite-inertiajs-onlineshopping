@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../Layout/Layout'
 import {usePage} from '@inertiajs/react';
 import InformationContainer from './InformationContainer';
@@ -7,6 +7,12 @@ import InformationContainer from './InformationContainer';
 export default function Create() {
 
 const {carts} = usePage().props
+const [validationFailed, setValidationFailed] = useState(null);
+
+function checkoutFailed()
+{
+   setValidationFailed('Mandatory field is not completed. Checkout unsuccessful');
+}
 
 return (
     <Layout>
@@ -14,8 +20,17 @@ return (
         <div class="basis-3/4">
         <h6 class="text-2xl font-bold dark:text-white">CHECKOUT FORM</h6>
         <br />
+        {validationFailed && 
+          <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">{''}</span> {validationFailed}
+          </div>
+          }
+         {/* checkout unsuccefull alert */}
+       
+        
+        
         {/* container for submiting user */}
-           <InformationContainer/>       
+           <InformationContainer checkoutFailed = {checkoutFailed}/>       
         </div>
         <div class="basis-1/4">
         <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -49,7 +64,7 @@ return (
                               <p className="ml-4">${item.price * item.quantity}.00</p>
                               
                             </div>
-                            <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                            <p className="mt-1 text-sm text-gray-500">category title</p>
                             <p className=" text-sm text-gray-500">£{item.price}/unit</p>
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">

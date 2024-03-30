@@ -32,17 +32,19 @@ class Product extends Model
     }
 
 
-   public function photo(): HasOne
+   public function photos() : HasMany
    {
-    return $this->hasOne(Photo::class);
+    return $this->hasMany(Photo::class);
    }
 
-
-    
-
-    public function categoryTitle()
+   public function categoryTitle()
     {
         return $this->category->title;
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
     // public function colors()

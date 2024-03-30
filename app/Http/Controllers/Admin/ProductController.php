@@ -14,8 +14,7 @@ use App\Models\Photo;
 
 use App\Traits\PhotoStore;  //using trait
 use App\Http\Requests\ProductFormRequest; //using request for validation
-
-
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -37,7 +36,7 @@ class ProductController extends Controller
         return Inertia::render('Seller/Products/CreateProduct', ['categories' => $categories,
         'imageUrl' => asset('images/dummy.jpg'),
     
-    ]);
+    ]); 
     }
 
     public function storeProduct(ProductFormRequest $request)
@@ -83,8 +82,9 @@ class ProductController extends Controller
 
     public function showProduct($id)
     {
+        
         try{
-            $product = Product::with('variants', 'category', 'photo')->find($id);
+            $product = Product::with('variants', 'category', 'photos')->find($id);
             return Inertia::render('Seller/Products/ShowProduct', ['product' => $product]);
         }
         catch(\Exception $e){   

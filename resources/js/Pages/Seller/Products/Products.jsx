@@ -34,6 +34,9 @@ export default function Products({products, categories}) {
           Category
         </Table.HeadCell>
         <Table.HeadCell>
+          Sub Category
+        </Table.HeadCell>
+        <Table.HeadCell>
           Variant
         </Table.HeadCell>
         <Table.HeadCell>

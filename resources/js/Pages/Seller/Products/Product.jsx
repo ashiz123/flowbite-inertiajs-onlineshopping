@@ -1,17 +1,39 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Table, Modal, Button, Checkbox, Label, TextInput, Select } from 'flowbite-react';
 import { router } from '@inertiajs/react';
 
 
 import ShowProduct from './ShowProduct';
+import axios from 'axios';
 
 
 export default function Product({product, products, categories}) {
 
   const [openModal, setOpenModal] = useState(false);
+  const [parent, setParent] = useState('');
 
 
-  console.log(product);
+  useEffect(()=> {
+
+    const fetchParent = async() =>
+    {
+      await axios.get(`/category/parent/${product.category.parent_id}`)
+      .then(response => {
+        console.log(response);
+        setParent(response.data);
+      })
+
+      .catch(error => {
+        console.error(error);
+      })
+    }
+
+        fetchParent();
+
+  }, [product.parent_id]);
+
+
+
 
   function openModalTrue()
   {
@@ -21,6 +43,7 @@ export default function Product({product, products, categories}) {
 
   function editProduct(id)
   {
+    console.log(id);
     router.get('/product/show/' + id);
   }
  
@@ -33,6 +56,11 @@ export default function Product({product, products, categories}) {
           </Table.Cell>
           <Table.Cell>
           {product.title}
+          </Table.Cell>
+          <Table.Cell>
+                  {parent ? parent :
+                    <span style = {{ color:"red" }}>No parent</span>
+                  }
           </Table.Cell>
           <Table.Cell>
           {product.category.title}

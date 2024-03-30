@@ -23,9 +23,10 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->string('type')->nullable();
             $table->string('origin')->nullable();
-
             $table->float('quantity');
             $table->integer('price');
+
+
             $table->timestamps();
         });
     }

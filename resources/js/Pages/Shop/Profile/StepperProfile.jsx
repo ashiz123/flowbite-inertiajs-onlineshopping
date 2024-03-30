@@ -5,7 +5,7 @@ import Layout from '../Layout/Layout';
 
 import Contact from './Contact';
 import PaymentInfo from './PaymentInfo';
-import Address from '../Checkout/Address';
+import Address from '../Checkout/Old checkoutfile/Address';
 
 function Stepper() {
   const [currentStep, setCurrentStep] = useState(1);

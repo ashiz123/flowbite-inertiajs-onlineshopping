@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('description');
             $table->boolean('variant')->default(0);
             
-
             $table->unsignedBigInteger('category_id')->default(0);
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->integer('minimum_price');

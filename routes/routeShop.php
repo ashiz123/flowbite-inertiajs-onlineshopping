@@ -31,7 +31,18 @@ Route::middleware(['auth.user.redirect'])->group(function(){
 
 //PAGES
 Route::get('/', [HomepageController::class, 'index'])->name('shop.index');
+
+//PRODUCT
+// Route::prefix('product')->controller(ProductController::class)->group(function(){
+//   Route::get('/{id}/overview}', 'show')->name('shop.product.show');
+//   Route::get('/{color}/color', 'getSizesByColor')->name('shop.product.color');
+// });
+
+
 Route::get('product/{id}/overview', [ProductController::class, 'show'])->name('shop.product.show');
+Route::get('/product_id/{productId}/color/{color}', [ProductController::class, 'getSizesByColor'])->name('shop.product.color');
+Route::get('product_id/{productId}/size/{size}', [ProductController::class, 'getColorsBySize' ])->name('shop.product.size');
+
 
 
 //AUTHENTICATING CUSTOMER PAGES
@@ -50,6 +61,9 @@ Route::middleware(['auth.customer'])->group(function(){
   Route::get('/checkout/create', [CheckoutController::class, 'create'])->name('shop.checkout.create');
   Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('shop.checkout.process');
   
+  //checkout address
+  Route::post('/checkout/add/address', [CheckoutController::class, 'addAddress'])->name('shop.checkout.address');
+  Route::get('/thankyou', [CheckoutController::class, 'checkoutSuccess'])->name('checkout.success');
 });
 
 

@@ -15,7 +15,7 @@ class HomepageController extends Controller
       
      
     // $product = Product::with('variants', 'category', 'photo')->find($id);
-     $products = Product::with('variants', 'category', 'photo')->get();
+     $products = Product::with('variants', 'category', 'photos')->get();
      return Inertia::render('Shop/Index', ['products' => $products ]);
    }
 }

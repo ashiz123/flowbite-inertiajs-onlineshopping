@@ -1,52 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect,createContext, useState } from 'react'
 import { usePage } from '@inertiajs/react';
 import { useDispatch, connect } from 'react-redux';
 import axios from 'axios';
-import { dummyData } from './dummyData';
-import AddedAddress from './AddedAddress';
+import { dummyData } from '../dummyData';
+import AddedAddress from '../AddedAddress';
+import { addAddress, addPreviousAdress } from '@/Redux/Actions/AddressAction';
 
 
-// function mapStateToProps(state) {
-//   const { checkout } = state
-//   return { 
-//    address : checkout.address,
-//    }
-// }
+
+export const MyContext = createContext();
 
 
+const initialAddressState = {
+  'firstaddress' : '' ,
+  'housenumber' : '',
+  'flatnumber': '',
+   'city' : '',
+  'reigion' : '',
+  'postcode' : '',
+  'country': ''
+  }
 
 
  function Address(props) {
 
-    console.log(props.address);
+    
 
-    const { address_api } = usePage().props;
+    const { address_api, user_address } = usePage().props;
 
     const [suggestions, setSuggestions] = useState(null);
     const [selectedSuggest, setSelectedSuggest] = useState('');
     const [addressAdd, setAddressAdd] = useState(false);
-    const [getInput, setGetInput] = useState({
-      'firstaddress' : '', 
-      'housenumber' : '',
-      'flatnumber': '',
-       'city' : '',
-      'reigion' : '',
-      'postcode' : '',
-      'country': ''
-      })
+    const [getInput, setGetInput] = useState(initialAddressState)
 
 
       
 
       const dispatch = useDispatch();
 
-      const addAddress = () => ({
-        type: 'ADD_ADDRESS',
-        payload: getInput
-      });
+     
 
 
 useEffect(() => {
+if(user_address)
+{
+  dispatch(addPreviousAdress(user_address));
+}
+
+ 
     if(selectedSuggest)
     {
 
@@ -106,39 +107,37 @@ useEffect(() => {
       setSelectedSuggest(e.target.value);
     }
 
-    function onAddAddressClick()
+
+
+     const onAddAddressClick = async(e) =>
     {
-      dispatch(addAddress())
-      setAddressAdd(true);
-      setGetInput({
-        'firstaddress' : '', 
-        'housenumber' : '',
-        'flatnumber': '',
-         'city' : '',
-        'reigion' : '',
-        'postcode' : '',
-        'country': ''
-        })
+      await axios.post('/shop/checkout/add/address', getInput)
+      .then(response => {
+        console.log(response)
+        dispatch(addAddress(getInput))
+        setAddressAdd(true);
+        setGetInput(initialAddressState)
+      })
+
+      .catch(error => {
+        // Handle error
+        console.error('Error creating resource:', error);
+      });
+      
+      
     }
 
 
    
 
-    
-   
-
-    
-    
-
-
-  return (
+ return (
     <>
     {
-      addressAdd &&
+      user_address &&
       <>
-      <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+      {/* <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
         Address added successfully
-      </div>
+      </div> */}
        <AddedAddress/>
       </>
     }

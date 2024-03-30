@@ -4,6 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Faker\Generator as Faker;
+use App\Models\User;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -15,16 +17,50 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    protected $model = User::class;
+
     public function definition(): array
     {
+        
         return [
-            'name' => 'Ashiz Hamal',
-            // 'email' => fake()->unique()->safeEmail(),
-            'email'=> 'ashizhamal@gmail.com',
+           'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'), // Default password for example
             'remember_token' => Str::random(10),
+            'type' => $this->faker->randomElement(['seller', 'customer']),
         ];
+    }
+
+    public function customer()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Ashiz Hamal',
+                'email' => 'hamalashiz@gmail.com',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'), // Default password for example
+                'remember_token' => Str::random(10),
+                'type' => 'customer',
+            ];
+        });
+        
+    }
+
+    public function seller()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Rajesh Hamal',
+                'email' => 'hamalrajesh@gmail.com',
+                'email_verified_at' => now(),
+                'password' => bcrypt('password'), // Default password for example
+                'remember_token' => Str::random(10),
+                'type' => 'seller',
+            ];
+        });
+        
     }
 
     /**
