@@ -6,20 +6,35 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Photo;
+use App\Models\Stock;
 
 
 use App\Traits\PhotoStore;  //using trait
 use App\Http\Requests\ProductFormRequest; //using request for validation
 use Illuminate\Support\Facades\Log;
+use App\Interfaces\ProductRepositoryInterface;
+
 
 class ProductController extends Controller
 {
 
+   
     use PhotoStore;
+
+    private $ProductRepositoryInterface;
+
+
+    public function __construct(ProductRepositoryInterface $ProductRepositoryInterface)
+    {
+        $this->ProductRepositoryInterface = $ProductRepositoryInterface;
+    }
+
+    
     public function index()
     {
       
@@ -39,43 +54,42 @@ class ProductController extends Controller
     ]); 
     }
 
+    
+
+
     public function storeProduct(ProductFormRequest $request)
     {
-       
         try{
-            $product = Product::create([
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'category_id' => $request->input('category_id'),
-            'variant' => $request->input('variant'),
-            'minimum_price' => $request->input('minimum_price')
-            ]);
-         
-          if($product)
+            DB::beginTransaction();
+
+            $product = $this->ProductRepositoryInterface->store($request);
+
+            if($product)
             {
-                $file =  $request->file('avatar');
-                $uploaded = $this->storeToFolder($file);
-                
-                $photo = new Photo();
-                $photo->product_id = $product->id;
-                $photo->path = $uploaded;
-                $photo->save();
+                $this->ProductRepositoryInterface->storePhoto($request, $product);
             }
+
+            if($product->variant === "0")
+            {
+                $this->ProductRepositoryInterface->storeProductStock($request, $product);
+            }
+
+            DB::commit();
+            
             
             //To display variant option if variant checkbox checked otherwise go to product page.
-            if($product->variant == '1') 
+            if($product->variant == "1") 
             {
-               return Inertia::render('Seller/Options/CreateOption', ['product' => $product]);
-            }else{
-                return to_route('product.index');
+              return Inertia::render('Seller/Options/CreateOption', ['product' => $product]);
             }
-            
+
         }
 
-        catch(\Exception $e){   
-             return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);
-        }
- 
+        catch(\Exception $e){
+            Log::info('error found ', $e->getMessage());
+            DB::rollBack();
+            return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);
+    }
     }
 
 

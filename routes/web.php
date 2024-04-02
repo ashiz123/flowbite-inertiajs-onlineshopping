@@ -6,10 +6,11 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\OptionController;
 use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\Admin\StockController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 
 /*å
@@ -100,6 +101,7 @@ Route::middleware('auth.seller')->prefix('option')->controller(OptionController:
     Route::get('/addVariant/{productId}', 'addVariant')->name('option.add');
     Route::match(['put', 'patch'], '/updateVariant/{productId}', 'updateVariant')->name('option.update');
     Route::delete('/deleteVariant/{variantId}', 'deleteVariant' )->name('option.delete');
+    Route::get('/{variantId}/product', 'getProduct')->name('option.product');
 });
 //end option
 
@@ -113,6 +115,11 @@ Route::middleware('auth.seller')->prefix('option')->controller(OptionController:
     Route::get('/product/{id}' , 'showProductOfOrder')->name('orders.product');
 });
 //end orders
+
+
+    Route::middleware('auth.seller')->prefix('stocks')->controller(StockController::class)->group(function(){
+        Route::get('', 'index')->name('stocks.index');
+    });
 
 
 

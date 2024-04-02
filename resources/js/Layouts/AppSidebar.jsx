@@ -74,8 +74,8 @@ export default function AppSidebar() {
               Orders
             </Sidebar.Item>
 
-            <Sidebar.Item href="#" icon={HiChartPie}>
-              Promotions & Discounts
+            <Sidebar.Item as={Link} href={route('stocks.index')}  icon={HiChartPie}>
+              Stocks
             </Sidebar.Item>
 
           </Sidebar.ItemGroup>

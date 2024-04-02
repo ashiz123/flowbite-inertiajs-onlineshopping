@@ -10,18 +10,21 @@ use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Photo;
-
-
- 
-
+use App\Models\Stock;
+use App\Interfaces\OptionRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 
 class OptionController extends Controller
 {
+
+    protected $OptionRepositoryInterface;
     use PhotoStore;
 
-    public function __construct()
+
+    public function __construct(OptionRepositoryInterface $OptionRepositoryInterface)
     {
         $this->middleware('log.errors');
+        $this->OptionRepositoryInterface = $OptionRepositoryInterface;
     }
     
     public function create()
@@ -38,41 +41,31 @@ class OptionController extends Controller
         $options = $request->options;
 
         try{
+            DB::beginTransaction();
             foreach($options as $option)
             {
              $opt = (object)$option; //converting array to object
-             $variant = new Variant;
-             $variant->product_id = $product->id;
-             $variant->sku = $opt->sku;
-             $variant->title = $opt->title;
-             $variant->size = $opt->size;
-             $variant->color = $opt->color;
-             $variant->origin = $opt->origin;
-             $variant->type = $opt->type;
-     
-             $variant->quantity = $opt->quantity;
-             $variant->price = $opt->price;
+             $variant = $this->OptionRepositoryInterface->storeOption($opt, $product);
 
-            if($variant->save())
-             {
-                $file =  $opt->avatar;
-                $uploaded = $this->storeToFolder($file);
-        
-                $photo = new Photo();
-                $photo->variant_id = $variant->id;
-                $photo->path = $uploaded;
-                $photo->save();
-             }
+                if($variant)
+                {
+                    $this->OptionRepositoryInterface->storeOptionStock($request, $variant );
+                }
             }
+            DB::commit();
               
             return Inertia::location('/product');
 
         }
         catch (\Exception $e) {
             // Handle other exceptions
+            Log::info($e->getMessage());
+            DB::rollBack();
             return Inertia::location('/error'. ['error', $e]);
         }
     }
+
+
 
    //Route is in API
     public function show($id)
@@ -83,6 +76,8 @@ class OptionController extends Controller
             'variant' =>  $variant
         ]); 
     }
+
+    
 
     public function addVariant($id)
     {
@@ -123,6 +118,13 @@ class OptionController extends Controller
            $photo->path = $uploaded;
            $photo->save();
         }
+    }
+
+    public function getProduct($variantId)
+    {
+        $product = Variant::with('product')->find($variantId);
+        return response()->json($product);
+        // Log::info($product);
     }
 
     public function deleteVariant($id)
