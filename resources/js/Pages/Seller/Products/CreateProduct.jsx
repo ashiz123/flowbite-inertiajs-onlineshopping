@@ -1,7 +1,8 @@
-import React, {useState, useRef, createContext} from 'react'
+import React, {useState, useRef, createContext, useEffect} from 'react'
 
-import { Button, Checkbox, Label, TextInput, Select } from 'flowbite-react';
+import { Button, Checkbox, Label, TextInput, Select, Alert } from 'flowbite-react';
 import { router, useForm } from '@inertiajs/react';
+
 
 
 import AppSidebar from '@/Layouts/AppSidebar';
@@ -26,21 +27,24 @@ export default function CreateProduct({categories}) {
 
 // const[product, setProduct] = useState(initialProduct);
 const fileInputRef = useRef(null);
-const { data, setData, post, progress } = useForm({
+const { data, setData, post, progress, error, processing, reset } = useForm({
  avatar: null,
  title: '',
  description : '',
  variant : 0,
- minimum_price : 0
+ minimum_price : 0,
+ quantity: 0
 })
-
+const[successMessage, setSuccessMessage] = useState(null)
 
 
 function handleChange(e)
 {
+  
   let name = e.target.name;
   let value = e.target.value;
   setData({...data, [name] : value})
+  
 }
 
 const handleFileChange = (e) =>
@@ -58,14 +62,24 @@ function handleVariant()
 function handleSubmit(e)
 {
   e.preventDefault();
-  console.log(data);
-  // router.post('/product/store', file)
-  post('/product/store', data)
+  post('/product/store', {onSuccess: () => {
+       setSuccessMessage('Product added successfully');
+       reset();
+     }});
 }
+
+
 
 function handleDivClick()
 {
   fileInputRef.current.click();
+}
+
+function handleQuantityChange(e)
+{ 
+  e.preventDefault();
+  setData({...data, [e.target.name] : e.target.value});
+
 }
 
 // const imagePath = '/images/' + product.product_image;
@@ -78,7 +92,12 @@ function handleDivClick()
       <AppSidebar />
     <div className=" flex-1 p-7 ">
       <Heading>Create Product</Heading>
-
+      {
+        successMessage &&
+        <Alert color="success" onDismiss={() => alert('Alert dismissed!')}>
+        <span className="font-medium">Info alert!</span> Change a few things up and try submitting again.
+        </Alert>
+      }
       <form className="flex max-w-md flex-col gap-4 g" onSubmit={handleSubmit}>
       
       <div>
@@ -181,36 +200,60 @@ function handleDivClick()
 
         
         <div className="basis-1/2 ">
-        <div className="mb-2 block">
-        <Label
-          htmlFor="minimum_price"
-          value="Set minimum price"
-        />
-      </div>
-        <TextInput
-          id="minimum_price"
-          required
-          shadow
-           type="text"
-          placeholder="Set minimum price"
-          value= {data.minimum_price}
-          name='minimum_price'
-          onChange= {handleChange}
-          
-        />
+          <div className="mb-2 block">
+          <Label htmlFor="minimum_price" value="Set minimum price" />
+          </div>
+
+           <TextInput
+            id="minimum_price"
+            required
+            shadow
+            type="text"
+            placeholder="Set minimum price"
+            value= {data.minimum_price}
+            name='minimum_price'
+            onChange= {handleChange} />
         </div>
         
       </div>
 
 
+      <div className='flex flex-row pt-5 space-x-2'>
       <div className="basis-1/2  pt-5">
         <div className="flex items-center gap-2 ">
         <Checkbox id="variant" name = "variant" type= "checkbox"  checked = {data.variant} onChange= {handleVariant}/>
         <Label htmlFor="publish">
           Variant
         </Label>
-      </div>
         </div>
+        <div class="border-gray-200">
+    <p class="px-3 text-gray-500 text-sm">If no variant, set the quantity</p>
+    </div>
+        </div>
+        
+{
+          !data.variant &&
+          <div className="basis-1/2 "   >
+          <div className="mb-2 block">
+          <Label htmlFor="quantity" value="Quantity" />
+          </div>
+
+           <TextInput
+            id="minimum_price"
+            required
+            shadow
+            type="number"
+            placeholder="Set Quantity"
+            name = "quantity"
+            value = {data.quantity}
+            onChange= {handleQuantityChange}
+          />
+          </div>
+}
+        
+          </div>
+
+
 
 
 

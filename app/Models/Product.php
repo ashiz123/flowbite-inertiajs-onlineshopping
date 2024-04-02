@@ -47,6 +47,16 @@ class Product extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function stocks()
+    {
+        return $this->morphMany('App\Models\Stock', 'stockable');
+    }
+
+    public function getAllStocks()
+    {
+        return $this->stocks();
+    }
+
     // public function colors()
     // {
     //     return $this->hasMany(Color::class);

@@ -38,4 +38,10 @@ class Variant extends Model
     {
         return $query->where('size', $size)->distinct()->pluck('color');
     }
+
+
+    public function stocks()
+    {
+        return $this->morphMany('App\Models\Variant', 'stockable');
+    }
 }

@@ -147,8 +147,30 @@ console.log(options);
 
           <div style= {divWidth200}> <TextInput placeholder='Enter title' name='title' value={option.title} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div> <TextInput placeholder='SKU' name='sku' value={option.sku} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
-          <div> <TextInput placeholder='Size' name='size' value={option.size} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
-          <div> <TextInput placeholder='Color' name='color' value={option.color}  onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
+          {/* <div> <TextInput placeholder='Size' name='size' value={option.size} onChange={(e)=>handleInputChange(e, index)}></TextInput></div> */}
+          
+          <div><Select id="size" name='size' value={option.size} style={{ width:"100px" }}  onChange={(e)=>handleInputChange(e, index)} required>
+        <option value= "">Size</option>
+        <option>L</option>
+        <option>M</option>
+        <option>S</option>
+        <option>XL</option>
+        <option>XXL</option>
+        </Select></div>
+
+        <div><Select id="color" placeholder="Color" name='color' value={option.color} onChange={(e)=>handleInputChange(e, index)} style={{ width:"100px" }} required>
+        <option value = "">Color</option>
+        <option>Red</option>
+        <option>Orange</option>
+        <option>Green</option>
+        <option>Purple</option>
+        <option>Black</option>
+        <option>White</option>
+        <option>Yellow</option>
+        <option>Navy</option>
+        </Select></div>
+
+          {/* <div> <TextInput placeholder='Color' name='color' value={option.color}  onChange={(e)=>handleInputChange(e, index)}></TextInput></div> */}
           <div> <TextInput placeholder='Origin' name='origin' value={option.origin} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div> <TextInput placeholder='Type' name='type' value={option.type} onChange={(e)=>handleInputChange(e, index)}></TextInput></div>
           <div> <TextInput placeholder='Quantity' name='quantity' value={option.quantity}  onChange={(e)=>handleInputChange(e, index)}></TextInput></div>

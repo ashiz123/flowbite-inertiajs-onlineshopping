@@ -17,6 +17,11 @@ use App\Interfaces\OrderRepositoryInterface;
 use App\Repositories\CheckoutRepository;
 use App\Interfaces\CheckoutRepositoryInterface;
 
+use App\Interfaces\ProductRepositoryInterface;
+use App\Repositories\ProductRepository;
+
+use App\Interfaces\OptionRepositoryInterface;
+use App\Repositories\OptionRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProfileRepositoryInterface::class, ProfileRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->bind(CheckoutRepositoryInterface::class, CheckoutRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(OptionRepositoryInterface::class, OptionRepository::class);
     }
 
     /**
