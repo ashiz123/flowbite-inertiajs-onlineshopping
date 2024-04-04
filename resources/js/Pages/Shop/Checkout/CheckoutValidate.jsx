@@ -72,6 +72,9 @@ export const ValidateCheckout = (formData) => {
     
 }
 
+
+
+
 export const ValidateOnChangeInputCheckout = (fieldName, value) => 
 {
     let error = null;

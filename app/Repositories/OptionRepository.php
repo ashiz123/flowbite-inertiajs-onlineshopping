@@ -6,7 +6,8 @@ use App\Models\Variant;
 use App\Models\Stock;
 use App\Models\Photo;
 use App\Traits\PhotoStore;
-
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Http\RedirectResponse;
 
 class OptionRepository implements OptionRepositoryInterface
 {
@@ -34,7 +35,7 @@ class OptionRepository implements OptionRepositoryInterface
 
     }
 
-    public function storeOptionFile($opt, $variant)
+    public function storeOptionFile($opt, $variant): void
     {
         $file =  $opt->avatar;
         $uploaded = $this->storeToFolder($file);
@@ -44,16 +45,11 @@ class OptionRepository implements OptionRepositoryInterface
         $photo->path = $uploaded;
         $photo->save();
 
+        
     }
 
 
 
-    public function storeOptionStock($request, $variant)
-    {
-        //request the quantity
-        $stock = new Stock();
-        $stock->quantity = 30;
-        $variant->stocks()->save($stock);
-    }
+    
 
 }

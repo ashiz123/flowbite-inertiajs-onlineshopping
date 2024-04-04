@@ -25,8 +25,11 @@ class ProductFormRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'required|string',
             'category_id' => 'required',
-            'variant' => 'required',
-            'avatar' => 'required'
+            'variant' => 'nullable|boolean',
+            'avatar' => 'required',
+            'minimum_price' => 'required|not_in:0',
+            'quantity' => 'required_with:variant',
+            // 'quantity' => 'required|not_in:0'
             // Add other fields and validation rules as needed
         ];
     }

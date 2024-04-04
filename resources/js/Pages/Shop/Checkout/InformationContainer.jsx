@@ -67,7 +67,10 @@ const fetchAddress = async(selectedSuggestId) => {
 function onSelectedAddress(selectedSuggestId)
 {
   console.log(selectedSuggestId);
-  const addressInfo =  fetchAddress(selectedSuggestId);
+  fetchAddress(selectedSuggestId);
+
+  //this's for dummyData for address
+  //const addressInfo = dummyData;
   // setFormData({...formData, ['city'] : addressInfo.town_or_city,  ['reigion'] : addressInfo.county, ['postcode'] : addressInfo.postcode , ['housenumber'] : addressInfo.line_1, ['flatnumber'] : addressInfo.line_2, ['country']: addressInfo.country})
 }
 

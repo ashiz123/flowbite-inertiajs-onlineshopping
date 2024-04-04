@@ -21,6 +21,7 @@ export default function Products({products, categories}) {
       <AppSidebar />
     
       <div className=" flex-1 p-7 ">
+      <Heading>Products</Heading>
       <Table>
       <Table.Head>
         <Table.HeadCell>

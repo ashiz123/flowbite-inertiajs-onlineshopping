@@ -1,17 +1,12 @@
 import React, {useState, useRef, createContext, useEffect} from 'react'
 
 import { Button, Checkbox, Label, TextInput, Select, Alert } from 'flowbite-react';
-import { router, useForm } from '@inertiajs/react';
-
-
-
+import { router, useForm, usePage } from '@inertiajs/react';
 import AppSidebar from '@/Layouts/AppSidebar';
 import Navigation from '@/Layouts/Navigation';
 import {Heading} from '@/Components/heading';
 
-
-
-
+import { ErrorAlert } from '@/Components/ErrorAlert';
 import { Avatar } from 'flowbite-react';
 
 
@@ -36,6 +31,12 @@ const { data, setData, post, progress, error, processing, reset } = useForm({
  quantity: 0
 })
 const[successMessage, setSuccessMessage] = useState(null)
+const{errors} = usePage().props;
+const [errorQuantity, setErrorQuantity] = useState(false);
+
+
+
+
 
 
 function handleChange(e)
@@ -44,7 +45,7 @@ function handleChange(e)
   let name = e.target.name;
   let value = e.target.value;
   setData({...data, [name] : value})
-  
+  // setFormErrors({...errors, })
 }
 
 const handleFileChange = (e) =>
@@ -52,6 +53,7 @@ const handleFileChange = (e) =>
   e.preventDefault();
   const selectedFile = e.target.files[0];
   setData('avatar',selectedFile);
+  
 }
 
 function handleVariant()
@@ -63,10 +65,10 @@ function handleSubmit(e)
 {
   e.preventDefault();
   post('/product/store', {onSuccess: () => {
-       setSuccessMessage('Product added successfully');
-       reset();
-     }});
-}
+      setSuccessMessage('Product added successfully');
+      reset();
+    }});
+ }
 
 
 
@@ -108,16 +110,20 @@ function handleQuantityChange(e)
           />
         </div>
         <TextInput
-          id="description"
+          id="title"
           className='mb-4'
           placeholder="Product Name"
-          required
+          // required
           shadow
           type="text"
           value= {data.title}
           name= "title"
           onChange= {handleChange}
         />
+        {
+            errors.title && <span> <ErrorAlert>{errors.title}</ErrorAlert></span>
+          }
+        
       </div>
       <div>
         <div className=" block">
@@ -133,7 +139,7 @@ function handleQuantityChange(e)
       <div>
         <TextInput
           id="description"
-          required
+          // required
           shadow
           sizing="lg"
           type="text"
@@ -141,8 +147,10 @@ function handleQuantityChange(e)
           value= {data.description}
           name='description'
           onChange= {handleChange}
-          
-        />
+          />
+          {
+            errors.description && <span> <ErrorAlert>{errors.description}</ErrorAlert></span>
+          }
       </div>
 
     <div style={{marginTop: "5px"}}></div>
@@ -158,6 +166,9 @@ function handleQuantityChange(e)
       </div> 
     
     }
+     {
+            errors.avatar && <span> <ErrorAlert>Upload photo is required</ErrorAlert></span>
+          }
     
       
 
@@ -179,9 +190,11 @@ function handleQuantityChange(e)
         name = 'category_id'
         onChange= {handleChange}
         value={data.category_id}
-        required
+        // required
       >
-         
+          <option value="">
+              Select Main category
+           </option>
 
         {
           categories.map((category, i)=> {
@@ -195,6 +208,9 @@ function handleQuantityChange(e)
        
         
       </Select>
+      {
+            errors.category_id && <span> <ErrorAlert>{errors.category_id}</ErrorAlert></span>
+          }
     </div>
         </div>
 
@@ -203,16 +219,19 @@ function handleQuantityChange(e)
           <div className="mb-2 block">
           <Label htmlFor="minimum_price" value="Set minimum price" />
           </div>
-
-           <TextInput
+          <TextInput
             id="minimum_price"
-            required
+            // required
             shadow
             type="text"
             placeholder="Set minimum price"
             value= {data.minimum_price}
             name='minimum_price'
             onChange= {handleChange} />
+             {
+            errors.minimum_price && <span> <ErrorAlert>{errors.minimum_price}</ErrorAlert></span>
+          }
+
         </div>
         
       </div>
@@ -240,7 +259,7 @@ function handleQuantityChange(e)
 
            <TextInput
             id="minimum_price"
-            required
+            // required
             shadow
             type="number"
             placeholder="Set Quantity"
@@ -248,6 +267,9 @@ function handleQuantityChange(e)
             value = {data.quantity}
             onChange= {handleQuantityChange}
           />
+           {
+            errorQuantity && <span> <ErrorAlert>Quantity required</ErrorAlert></span>
+          }
           </div>
 }
         

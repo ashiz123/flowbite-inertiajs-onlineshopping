@@ -9,5 +9,5 @@ interface OptionRepositoryInterface
 
     public function storeOptionFile($opt, $variant);
 
-    public function storeOptionStock($request, $variant);
+   
 }

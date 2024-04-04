@@ -13,18 +13,21 @@ use App\Models\Photo;
 use App\Models\Stock;
 use App\Interfaces\OptionRepositoryInterface;
 use Illuminate\Support\Facades\Log;
+use App\Interfaces\StockRepositoryInterface;
 
 class OptionController extends Controller
 {
 
     protected $OptionRepositoryInterface;
+    protected $StockRepositoryInterface;
     use PhotoStore;
 
 
-    public function __construct(OptionRepositoryInterface $OptionRepositoryInterface)
+    public function __construct(OptionRepositoryInterface $OptionRepositoryInterface , StockRepositoryInterface $StockRepositoryInterface)
     {
         $this->middleware('log.errors');
         $this->OptionRepositoryInterface = $OptionRepositoryInterface;
+        $this->StockRepositoryInterface = $StockRepositoryInterface;
     }
     
     public function create()
@@ -40,16 +43,18 @@ class OptionController extends Controller
         $product = (object)$request->product;
         $options = $request->options;
 
+
         try{
             DB::beginTransaction();
             foreach($options as $option)
             {
-             $opt = (object)$option; //converting array to object
-             $variant = $this->OptionRepositoryInterface->storeOption($opt, $product);
+             $singleOption = (object)$option; //converting array to object
+             $quantity = $singleOption->quantity;
+             $variant = $this->OptionRepositoryInterface->storeOption($singleOption, $product);
 
                 if($variant)
                 {
-                    $this->OptionRepositoryInterface->storeOptionStock($request, $variant );
+                    $this->StockRepositoryInterface->createStock($variant, $quantity );
                 }
             }
             DB::commit();
