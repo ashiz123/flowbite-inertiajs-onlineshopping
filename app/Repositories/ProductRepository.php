@@ -13,31 +13,21 @@ class ProductRepository implements ProductRepositoryInterface
 
     use PhotoStore;
 
-    public function store($request)
+    public function store($validated)
     {
         $product = Product::create([
-        'title' => $request->input('title'),
-        'description' => $request->input('description'),
-        'category_id' => $request->input('category_id'),
-        'variant' => $request->input('variant'),
-        'minimum_price' => $request->input('minimum_price')
+        'title' => $validated['title'],
+        'description' => $validated['description'],
+        'category_id' => $validated['category_id'],
+        'variant' => $validated['variant'],
+        'minimum_price' => $validated['minimum_price']
         ]);
         
         return $product;
     }
 
 
-
-    public function storeProductStock($request, $product)
-    {
-        $stock = new Stock();
-        $stock->quantity = $request->quantity; 
-        $product->stocks()->save($stock);
-    }
-
-
-
-    public function storePhoto($request, $product)
+ public function storePhoto($request, $product)
     {
         Log::info($request);
         $file =  $request->file('avatar');
@@ -49,9 +39,6 @@ class ProductRepository implements ProductRepositoryInterface
         $photo->save();
     }
 
-    public function storeVariants()
-    {
-        
-    }
+   
 
 }

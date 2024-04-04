@@ -5,22 +5,30 @@ namespace App\Http\Controllers\Shop;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Interfaces\CheckoutRepositoryInterface;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\Stock;
+
+use App\Interfaces\CheckoutRepositoryInterface;
+use App\Interfaces\StockRepositoryInterface;
+
+
 
 class CheckoutController extends Controller
 {
     private $checkoutRepositoryInterface;
+    private $stockRepositoryInterface;
 
 
-    public function __construct(CheckoutRepositoryInterface $checkoutRepositoryInterface)
+    public function __construct(CheckoutRepositoryInterface $checkoutRepositoryInterface, StockRepositoryInterface $stockRepositoryInterface )
     {
         $this->checkoutRepositoryInterface = $checkoutRepositoryInterface;
+        $this->stockRepositoryInterface = $stockRepositoryInterface;
     }
 
     public function create()
@@ -36,18 +44,23 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-      
+        // $cartItems = $request->session()->get('cart', []);
+        // $total_amount = $this->getTotalAmountOfOrder($cartItems);
+       
     try{
         DB::beginTransaction();
         
         $cartItems = $request->session()->get('cart', []);
         $total_amount = $this->getTotalAmountOfOrder($cartItems);
-        
-        
+
         $order = $this->checkoutRepositoryInterface->orderConfirm($request, $total_amount);
 
         $this->checkoutRepositoryInterface->orderDetail($order, $cartItems);
+     
+        $this->stockRepositoryInterface->updateStock($cartItems);
+
         Session::forget('cart');
+        
         
         DB::commit();
 
@@ -64,6 +77,8 @@ class CheckoutController extends Controller
    
 
     }
+
+    
 
 
 

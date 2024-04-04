@@ -18,6 +18,7 @@ use App\Traits\PhotoStore;  //using trait
 use App\Http\Requests\ProductFormRequest; //using request for validation
 use Illuminate\Support\Facades\Log;
 use App\Interfaces\ProductRepositoryInterface;
+use App\Interfaces\StockRepositoryInterface;
 
 
 class ProductController extends Controller
@@ -27,11 +28,13 @@ class ProductController extends Controller
     use PhotoStore;
 
     private $ProductRepositoryInterface;
+    private $StockRepositoryInterface;
 
 
-    public function __construct(ProductRepositoryInterface $ProductRepositoryInterface)
+    public function __construct(ProductRepositoryInterface $ProductRepositoryInterface, StockRepositoryInterface $StockRepositoryInterface)
     {
         $this->ProductRepositoryInterface = $ProductRepositoryInterface;
+        $this->StockRepositoryInterface = $StockRepositoryInterface;
     }
 
     
@@ -58,12 +61,13 @@ class ProductController extends Controller
 
 
     public function storeProduct(ProductFormRequest $request)
-    {
+    {           
         try{
             DB::beginTransaction();
 
-            $product = $this->ProductRepositoryInterface->store($request);
-
+            $product = $this->ProductRepositoryInterface->store( $request);
+            $quantity = $request->quantity;
+           
             if($product)
             {
                 $this->ProductRepositoryInterface->storePhoto($request, $product);
@@ -71,7 +75,7 @@ class ProductController extends Controller
 
             if($product->variant === "0")
             {
-                $this->ProductRepositoryInterface->storeProductStock($request, $product);
+                $this->StockRepositoryInterface->createStock($product, $quantity);
             }
 
             DB::commit();
@@ -86,7 +90,7 @@ class ProductController extends Controller
         }
 
         catch(\Exception $e){
-            Log::info('error found ', $e->getMessage());
+            Log::info($e->getMessage());
             DB::rollBack();
             return Inertia::render('Errors/Integrity', ['error' => $e->getMessage()]);
     }

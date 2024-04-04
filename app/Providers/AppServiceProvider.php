@@ -23,6 +23,9 @@ use App\Repositories\ProductRepository;
 use App\Interfaces\OptionRepositoryInterface;
 use App\Repositories\OptionRepository;
 
+use App\Interfaces\StockRepositoryInterface;
+use App\Repositories\StockRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -36,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CheckoutRepositoryInterface::class, CheckoutRepository::class);
         $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->bind(OptionRepositoryInterface::class, OptionRepository::class);
+        $this->app->bind(StockRepositoryInterface::class, StockRepository::class);
     }
 
     /**

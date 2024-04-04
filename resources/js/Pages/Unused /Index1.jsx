@@ -1,10 +1,10 @@
 import React from 'react'
-import Layout from './Layout/Layout';
-import Carousel from './Content/Carousel';
+import Layout from '../Shop/Layout/Layout';
+import Carousel from '../Shop/Content/Carousel';
 
 export default function App({products}) {
 
-    console.log(products);
+   
     return (
         <Layout>
            <div className="flex space-x-4 m-4">
