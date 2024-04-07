@@ -29,6 +29,8 @@ const [errors, setErrors] = useState({});
 
 
 
+
+
 function onChangeInput(fieldName, value)
 {
  
@@ -67,11 +69,11 @@ const fetchAddress = async(selectedSuggestId) => {
 function onSelectedAddress(selectedSuggestId)
 {
   console.log(selectedSuggestId);
-  fetchAddress(selectedSuggestId);
+  // fetchAddress(selectedSuggestId);
 
   //this's for dummyData for address
-  //const addressInfo = dummyData;
-  // setFormData({...formData, ['city'] : addressInfo.town_or_city,  ['reigion'] : addressInfo.county, ['postcode'] : addressInfo.postcode , ['housenumber'] : addressInfo.line_1, ['flatnumber'] : addressInfo.line_2, ['country']: addressInfo.country})
+  const addressInfo = dummyData;
+  setFormData({...formData, ['city'] : addressInfo.town_or_city,  ['reigion'] : addressInfo.county, ['postcode'] : addressInfo.postcode , ['housenumber'] : addressInfo.line_1, ['flatnumber'] : addressInfo.line_2, ['country']: addressInfo.country})
 }
 
 
@@ -88,7 +90,10 @@ function onSelectedAddress(selectedSuggestId)
       router.visit(response.data.redirect_to);
     }
     catch(error){
-      console.error(error);
+      if (error.response) {
+         console.log(error.response.data.message);
+         checkoutFailed(error.response.data.message);
+      }
       
     }
   }
@@ -116,11 +121,11 @@ function onSelectedAddress(selectedSuggestId)
     
     if(validation(formData))
     {
-     checkout()
+      checkout()
     }
     else{
       console.log('failed');
-      checkoutFailed();
+      checkoutFailed('Fill up the required input of form');
     }
 
   }

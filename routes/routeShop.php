@@ -48,7 +48,9 @@ Route::get('product_id/{productId}/size/{size}', [ProductController::class, 'get
 //AUTHENTICATING CUSTOMER PAGES
 Route::middleware(['auth.customer'])->group(function(){
    Route::post('/logout', [UserController::class, 'logout'])->name('shop.user.logout');
+   Route::post('/get-variant-by-attribute', [CartContoller::class, 'getVariantByAttribute'])->name('cart.getVariantByAttribute');
    Route::post('/add-item-to-cart', [CartContoller::class, 'addItemToCart'])->name('cart.add');
+
  //profile route start
 
   // Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');

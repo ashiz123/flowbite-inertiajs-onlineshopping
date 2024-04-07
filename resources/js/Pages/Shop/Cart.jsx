@@ -69,11 +69,38 @@ export default function Cart({slideOver, closeSlideOver}) {
                               <h3>
                                 <a href="#">{item.name}</a>
                               </h3>
-                              <p className="ml-4">${item.price * item.quantity}.00</p>
+                              {
+                                item.variant ?
+                                <p className="ml-4">${item.variant.price * item.quantity}.00</p>
+                                : <p className="ml-4">${item.price * item.quantity}.00</p>
+                              }
+                             
                               
                             </div>
-                            <p className="mt-1 text-sm text-gray-500">Salmon</p>
-                            <p className=" text-sm text-gray-500">£{item.price}/unit</p>
+                            <div className="flex flex-row">
+                              <div class="basis-1/2">
+                                <p className="mt-1 text-sm text-gray-500">Salmon</p>
+                                {
+                                  item.variant ?
+                                  <p className=" text-sm text-gray-500">£{item.variant.price}/unit</p>
+                                  :
+                                  <p className=" text-sm text-gray-500">£{item.price}/unit</p>
+                                }
+                                
+                              </div>
+                              <div class="basis-1/2">
+                                {
+                                  item.variant &&
+                                  <>
+                                  <p className="mt-1 text-sm text-gray-500">{item.variant.title}</p>
+                                  <p className=" text-sm text-gray-500">{item.variant.color}</p>
+                                  <p className=" text-sm text-gray-500">{item.variant.size}</p>
+                                  </>
+                                }
+                              
+                              </div>
+                            </div>
+                            <br />
                           </div>
                           <div className="flex flex-1 items-end justify-between text-sm">
                             <p className="text-gray-500">Qty {item.quantity}</p>

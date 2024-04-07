@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { getColor } from './ProductOverviewFunction'
 import axios from 'axios';
 
-export default function ProductByColor({color, getSizesByColor, productId}) {
+export default function ProductByColor({color, getSizesByColor, productId, addVariant}) {
 
     const [sizes, setSizes] = useState({});
 
@@ -14,12 +14,14 @@ export default function ProductByColor({color, getSizesByColor, productId}) {
     function getSizesOfColor(e)
     {
         e.preventDefault();
+        addVariant('color', color);
         const fetchSizes = async() => {
              try{
                 const response = await axios.get(`/shop/product_id/${productId}/color/${color}`)
                 if(response)
                 {
                     getSizesByColor(response);
+                    
                 }
              }
 
@@ -30,6 +32,9 @@ export default function ProductByColor({color, getSizesByColor, productId}) {
         fetchSizes();
        
     }
+
+
+
     
   return (
     <label class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 focus:outline-none ring-gray-400">

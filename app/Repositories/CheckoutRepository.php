@@ -33,16 +33,23 @@ class CheckoutRepository implements CheckoutRepositoryInterface
 
     public function orderDetail( $order, $cartItems)
     {
-      foreach($cartItems as $item)
+      foreach($cartItems as $cartItem)
       {
         $orderDetails = new OrderDetails();
         $orderDetails->order_number = $order['order_number'];
-        $orderDetails->product_id = $item['product_id'];
-        $orderDetails->variant_id = null;
-        $orderDetails->order_quantity = $item['quantity'];
+        $orderDetails->product_id = $cartItem['product_id'];
+        if($cartItem['variant'])
+        {
+          $orderDetails->variant_id = $cartItem['variant']['id'];
+        }else{
+          $orderDetails->variant_id = null;
+        }
+       
+        $orderDetails->order_quantity = $cartItem['quantity'];
         $orderDetails->save();
+        Log::info($orderDetails);
        } 
-      return ;
+       return ;
      }
 
    

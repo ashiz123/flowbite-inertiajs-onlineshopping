@@ -1,8 +1,8 @@
-import React, {useReducer, useState} from 'react'
+import React, {useEffect, useReducer, useState} from 'react'
 import Layout from './Layout/Layout'
 import { router, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { extractUniqueColor, extractUniqueSize, getColor } from './ProductOverviewFunction';
+import { extractUniqueColor, extractUniqueSize, getColor, validateVariant } from './ProductOverviewFunction';
 import ProductByColor from './ProductByColor';
 import ProductBySize from './ProductBySize';
 
@@ -10,44 +10,115 @@ import ProductBySize from './ProductBySize';
 export default function ProductOverview({product}) {
 
  const imagePath = '/storage/' + product.photos[0].path
+
  const extractColors = extractUniqueColor(product.variants); // ProductOverViewFunction
  const extractSizes = extractUniqueSize(product.variants);
 
  const[currentSizes, setCurrentSizes ] = useState(extractSizes);
  const[currentColors, setCurrentColors ] = useState(extractColors);
 
+ const[variant, setVariant] = useState({
+  'color' : '',
+  'size' : ''
+ })
+ const[isValid, setIsValid] = useState(false);
+ const [variantError, setVariantError] = useState({})
+ const [cartItems, setCartItems] = useState({});
 
 
+
+
+ useEffect(() => {
+
+ const{valid, errors} = validateVariant(variant);
+
+ setVariantError(errors);
+ setIsValid(valid);
+ 
+}, [variant])
+
+
+
+function onAddVariant(key, value)
+ {
+  
+  setVariant(prevVariant => ({
+    ...prevVariant,
+    [key]: value
+  }));
+ 
+}
+
+
+function getSizesByColor(sizes)
+ {
+    setCurrentSizes(sizes.data.sizes);
+ }
+
+ function getColorsBySize(colors)
+ {
+    setCurrentColors(colors.data.colors)
+ }
 
  
- const addItemToCart = async(e) =>
+
+ 
+const addItemToCart = async(e) =>
   {
-   
     e.preventDefault();
-    console.log(product);
-    try{
-      await axios.post('/shop/add-item-to-cart', product, imagePath ).then(function(response){
-        console.log(response);
-        window.location.reload(false);
-      })
-      
-     }
-    catch(error)
+    if(product.variant)
     {
-      console.error(error);
+       if(isValid)
+       {
+          fetchVariantByAttribute();
+        }
+        else{
+          console.log('not validate');
+       }
     }
-  }
+    
+    else
+    {
+        fetchAddItemToCart()
+    }
+    }
+
+    //use for both variant and product
+    const fetchAddItemToCart =async(productVariant = null) =>
+    {
+     console.log(productVariant)
+      try{
+        await axios.post('/shop/add-item-to-cart', {product, productVariant} )
+        .then(function(response){
+         console.log(response);
+         window.location.reload(false);
+        })}
+        catch(error)
+        {
+          console.error(error.message);
+        }
+    }
 
 
-  function getSizesByColor(sizes)
-  {
-     setCurrentSizes(sizes.data.sizes);
-  }
 
-  function getColorsBySize(colors)
-  {
-     setCurrentColors(colors.data.colors)
-  }
+    //for variant only
+    const fetchVariantByAttribute = async() => {
+      await axios.post('/shop/get-variant-by-attribute/', variant)
+     .then(
+       function(response){
+         console.log(response.data);
+         fetchAddItemToCart(response.data)
+         
+       })
+     .catch(function(error){
+       console.log(error);
+     })
+   }
+
+
+
+   
+
 
 
   return (
@@ -118,7 +189,9 @@ export default function ProductOverview({product}) {
             </div>
           </div>
   
-          <form class="mt-10">
+
+        {product.variant ? 
+          <form class="mt-10" >
             {/* <!-- Colors --> */}
             <div>
               <h3 class="text-sm font-medium text-gray-900">Color</h3>
@@ -132,7 +205,7 @@ export default function ProductOverview({product}) {
                   --> */}
                   {
                     product.variants && currentColors.map((color, i) => {
-                      return (<ProductByColor key={i} color= {color} getSizesByColor={getSizesByColor} productId = {product.id}/>)
+                      return (<ProductByColor key={i} color= {color} getSizesByColor={getSizesByColor} productId = {product.id} addVariant={onAddVariant}/>)
                     }) 
                   }
                   
@@ -140,6 +213,12 @@ export default function ProductOverview({product}) {
                   
                 </div>
               </fieldset>
+              {
+                variantError.color && <span className='text-red-600 text-sm'> Product have color variant. Required color</span>
+              }
+              {
+                variant.color && <span> Selected : {variant.color} </span>
+              }
             </div>
   
             {/* <!-- Sizes --> */}
@@ -168,7 +247,7 @@ export default function ProductOverview({product}) {
                   {
                     product.variants && currentSizes.map((size, i) => {
                       return (
-                       <ProductBySize key={i} size = {size} colorsBySize={getColorsBySize} productId={product.id}/>
+                       <ProductBySize key={i} size = {size} colorsBySize={getColorsBySize} productId={product.id} addVariant={onAddVariant}/>
                       )
                     })
                   }
@@ -180,10 +259,24 @@ export default function ProductOverview({product}) {
                  
                 </div>
               </fieldset>
+              {
+                variantError.size && <span  className='text-red-600 text-sm'> Product have size variant. Required size</span>
+              }
+              {
+                variant.size && <span> Selected : {variant.size} </span>
+              }
             </div>
   
             <button type="submit" onClick={addItemToCart} class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
           </form>
+          :  
+          <>
+          <br /><br />
+           No variations found
+          <button type="submit" onClick={addItemToCart} class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
+          </>
+           
+          }
         </div>
   
         <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">

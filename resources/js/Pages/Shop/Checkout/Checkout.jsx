@@ -9,9 +9,10 @@ export default function Create() {
 const {carts} = usePage().props
 const [validationFailed, setValidationFailed] = useState(null);
 
-function checkoutFailed()
+
+function checkoutFailed(message)
 {
-   setValidationFailed('Mandatory field is not completed. Checkout unsuccessful');
+   setValidationFailed(message);
 }
 
 return (

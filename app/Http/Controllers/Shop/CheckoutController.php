@@ -44,35 +44,47 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-        // $cartItems = $request->session()->get('cart', []);
-        // $total_amount = $this->getTotalAmountOfOrder($cartItems);
+        $cartItems = $request->session()->get('cart', []);
+        if($cartItems){
        
-    try{
+     try{
         DB::beginTransaction();
         
-        $cartItems = $request->session()->get('cart', []);
+        
+       
         $total_amount = $this->getTotalAmountOfOrder($cartItems);
 
         $order = $this->checkoutRepositoryInterface->orderConfirm($request, $total_amount);
-
+        
         $this->checkoutRepositoryInterface->orderDetail($order, $cartItems);
      
         $this->stockRepositoryInterface->updateStock($cartItems);
+        
 
         Session::forget('cart');
-        
+       
         
         DB::commit();
+        
 
         // $currentDate = date('YmdHis');
         return response()->json(['redirect_to' => "/shop/thankyou"], 200);
-    }
+      }
+    
 
     catch(\Exception $e)
     {
         DB::rollBack();
         return "Transaction failed: " . $e->getMessage();
+    }}
+    else{
+        
+            // Throw exception if condition is not met
+            throw new \Exception("No items in cart");
+            return response()->json(['No items in cart']);
+        
     }
+    
 
    
 
@@ -93,6 +105,7 @@ class CheckoutController extends Controller
             $total_amount += $sub_total;
         }
         }   
+        
         return $total_amount;
     }
 
