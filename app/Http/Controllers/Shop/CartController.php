@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 
-class CartContoller extends Controller
+class CartController extends Controller
 {
 
 
@@ -39,9 +39,6 @@ class CartContoller extends Controller
 
         //if no cart_variant, than 
         $product_variant = $request['productVariant'];
-       
-
-
         $cart = $request->session()->get('cart', []);
         $product = Product::find($productData['id']);
         $user = Auth::user();
@@ -52,9 +49,6 @@ class CartContoller extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-      
-
-        
         if($product_variant != null)
         {
             $itemId = $product_variant['id'];
@@ -84,9 +78,18 @@ class CartContoller extends Controller
         }
 
         $request->session()->put('cart', $cart);
-        return $cart;
+        Log::info($cart);
+        return array_values($cart);
        
     }   
+
+
+    public function getCartItems()
+    {
+        $cart = Session::get('cart');
+        return array_values($cart);
+
+    }
 
     
 

@@ -1,6 +1,7 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect, useContext} from 'react';
 import { usePage, router } from '@inertiajs/react';
-import { Container } from 'postcss';
+import axios from 'axios';
+
 
 
 
@@ -8,7 +9,34 @@ import { Container } from 'postcss';
 export default function Cart({slideOver, closeSlideOver}) {
 
   const { carts } = usePage().props;
+  console.log(usePage().props);
   const totalAmount = carts.reduce((total, carts) => total + carts.price * carts.quantity, 0);
+  const [updatedCarts, setUpdatedCarts] = useState(carts)
+
+
+
+
+  useEffect(() => {
+   getCartItems()
+  })
+ 
+ 
+  const getCartItems = async()  =>
+  {
+    try{
+      await axios.get('/shop/get-cart-items')
+      .then(response => {
+        console.log(response);
+        setUpdatedCarts(response.data);
+      })
+     .catch(error => console.error(error))
+    }
+
+    catch(error){
+      console.error(error)
+    }
+   
+  }
   
   
   function closeSlide()
@@ -54,7 +82,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                       
                       {
-                        carts?.map((item, i) => {
+                       updatedCarts.map((item, i) => {
                           const imagePath = '/storage/' + item.image
                           return(
                             <span key = {i}> 

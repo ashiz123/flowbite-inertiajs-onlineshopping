@@ -1,13 +1,17 @@
-import React, {useEffect, useReducer, useState} from 'react'
+import React, {useEffect, useReducer, useState, useContext} from 'react'
 import Layout from './Layout/Layout'
-import { router, usePage } from '@inertiajs/react';
 import axios from 'axios';
-import { extractUniqueColor, extractUniqueSize, getColor, validateVariant } from './ProductOverviewFunction';
+import { extractUniqueColor, extractUniqueSize, validateVariant } from './ProductOverviewFunction';
 import ProductByColor from './ProductByColor';
 import ProductBySize from './ProductBySize';
+import CartContext from './Contexts/CartContext';
+import { usePage } from '@inertiajs/react';
+import SuccessAlert from '../../Components/SuccessAlert';
 
 
 export default function ProductOverview({product}) {
+
+  console.log(usePage().props);
 
  const imagePath = '/storage/' + product.photos[0].path
 
@@ -16,14 +20,20 @@ export default function ProductOverview({product}) {
 
  const[currentSizes, setCurrentSizes ] = useState(extractSizes);
  const[currentColors, setCurrentColors ] = useState(extractColors);
+ const[itemAdded, setItemAdded] = useState(false);
 
  const[variant, setVariant] = useState({
   'color' : '',
   'size' : ''
  })
+
+ //here is the context
+ const { addToCart } = useContext(CartContext);// adding data to context to display the quantity of cart in navbar
+
  const[isValid, setIsValid] = useState(false);
  const [variantError, setVariantError] = useState({})
- const [cartItems, setCartItems] = useState({});
+
+
 
 
 
@@ -31,7 +41,6 @@ export default function ProductOverview({product}) {
  useEffect(() => {
 
  const{valid, errors} = validateVariant(variant);
-
  setVariantError(errors);
  setIsValid(valid);
  
@@ -90,8 +99,10 @@ const addItemToCart = async(e) =>
       try{
         await axios.post('/shop/add-item-to-cart', {product, productVariant} )
         .then(function(response){
-         console.log(response);
-         window.location.reload(false);
+        
+         addToCart(response.data); //sending data to context 
+         setItemAdded(true);
+        //  window.location.reload(false);
         })}
         catch(error)
         {
@@ -266,6 +277,13 @@ const addItemToCart = async(e) =>
                 variant.size && <span> Selected : {variant.size} </span>
               }
             </div>
+
+ 
+            <br />
+              {
+                itemAdded &&
+                <SuccessAlert>Item Addded Successfully</SuccessAlert>
+              }
   
             <button type="submit" onClick={addItemToCart} class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
           </form>

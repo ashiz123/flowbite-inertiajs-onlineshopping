@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController; //this is breeze controller
-use App\Http\Controllers\Shop\CartContoller;
+use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -48,9 +48,9 @@ Route::get('product_id/{productId}/size/{size}', [ProductController::class, 'get
 //AUTHENTICATING CUSTOMER PAGES
 Route::middleware(['auth.customer'])->group(function(){
    Route::post('/logout', [UserController::class, 'logout'])->name('shop.user.logout');
-   Route::post('/get-variant-by-attribute', [CartContoller::class, 'getVariantByAttribute'])->name('cart.getVariantByAttribute');
-   Route::post('/add-item-to-cart', [CartContoller::class, 'addItemToCart'])->name('cart.add');
-
+   Route::post('/get-variant-by-attribute', [CartController::class, 'getVariantByAttribute'])->name('cart.getVariantByAttribute');
+   Route::post('/add-item-to-cart', [CartController::class, 'addItemToCart'])->name('cart.add');
+   Route::get('/get-cart-items', [CartController::class, 'getCartItems'])->name('cart.get');
  //profile route start
 
   // Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');

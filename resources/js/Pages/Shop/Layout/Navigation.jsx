@@ -1,15 +1,9 @@
-import React, {useEffect, useState} from 'react'
-import { Navbar } from 'flowbite-react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, {useEffect, useState, useContext} from 'react'
 import {  HiShoppingBag,} from 'react-icons/hi';
 import { router, usePage, Link} from '@inertiajs/react';
 import Cart from '../Cart';
+import CartContext from '../Contexts/CartContext';
 
-
-// import { useDispatch, useSelector} from 'react-redux';
-// import { loggedInUser } from '@/Functions/LoggedInUser';
-// import { logoutSuccess } from '@/Redux/Actions/AuthAction';
-// import { logoutUser } from '@/Functions/LogoutUser';
 
 
 
@@ -20,10 +14,12 @@ export default function Navigation() {
     const [slideOn, setSlideOn] = useState(false);
     const [toggle , setToggle] = useState(false);
     const [megaMenu , setMegaMenu] = useState(false);
+    const { cartItems } = useContext(CartContext); //getting cartItems from context for updated cart quantity
+    const [updatedCarts, setUpdatedCarts] = useState(carts);
 
     
 
-    const totalQuantity = carts.reduce((total, carts) => total + carts.quantity, 0);
+    const totalQuantity = updatedCarts.reduce((total, updatedCarts) => total + updatedCarts.quantity, 0);
     
 
     const [slideOver, setSlideOver] = useState({
@@ -32,18 +28,15 @@ export default function Navigation() {
     });
 
 
-    const [cart, setCart] = useState({
-        'product_name' : '',
-        'quantity' : '',
-        'price' : ''
+    useEffect(() => {
+        if(cartItems.length != 0)
+        {
+            setUpdatedCarts(cartItems)
+        }
     })
 
 
-      
-
-
-
-        function closeSlideOver()
+    function closeSlideOver()
         {
             setSlideOver({...slideOver, 
                 background: ' opacity-0',
@@ -67,12 +60,7 @@ export default function Navigation() {
 
 
 
-         function addItemToCart(e)
-        {
-            e.preventDefault();
-            
-        }
-
+        
         const logout = async (e) => {
             e.preventDefault();
             if (window.confirm("Do you want to logout ?")) {

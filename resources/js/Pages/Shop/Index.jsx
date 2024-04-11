@@ -3,6 +3,7 @@ import Layout from './Layout/Layout';
 import { router, useForm } from '@inertiajs/react';
 import { checkUserLoggedIn, loggedInUser } from '@/Functions/LoggedInUser';
 import { useDispatch } from 'react-redux';
+import { usePage } from '@inertiajs/react';
 
 export default function Index({products}) {
    
@@ -11,7 +12,7 @@ export default function Index({products}) {
   //checking either page logged in or not
   // checkUserLoggedIn(dispatch)
   // const imagePath = '/storage/images/blazzer.jpeg' ;
-  console.log(products);
+  console.log(usePage().props);
   function productOverview(id){
     router.get('/shop/product/' + id + '/overview');
   }

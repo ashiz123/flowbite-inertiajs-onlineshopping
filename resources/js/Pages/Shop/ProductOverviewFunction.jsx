@@ -58,6 +58,10 @@ export function extractUniqueColor(variants){
         case 'Blue':
         color = 'bg-blue-600'
         break;
+
+        case 'Navy':
+          color = 'bg-lime-950'
+          break;
  
       
  

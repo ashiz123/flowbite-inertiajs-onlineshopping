@@ -8,6 +8,8 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import { ProtectedRoute } from './Functions/ProtectedRoute';
+import { CartProvider } from './Pages/Shop/Contexts/CartContext';
+
 
 
 
@@ -21,11 +23,16 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render( 
+       
         <Provider store={store}> 
+         <CartProvider >
         <ProtectedRoute>
         <App {...props} /> 
-        </ProtectedRoute>    
-        </Provider>);
+        </ProtectedRoute> 
+        </CartProvider>   
+        </Provider>
+       
+        );
     },
     progress: {
         color: '#4B5563',
