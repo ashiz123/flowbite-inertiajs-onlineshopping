@@ -15,25 +15,17 @@ export default function Navigation() {
     const [toggle , setToggle] = useState(false);
     const [megaMenu , setMegaMenu] = useState(false);
     const { cartItems } = useContext(CartContext); //getting cartItems from context for updated cart quantity
-    const [updatedCarts, setUpdatedCarts] = useState(carts);
+    
 
     
 
-    const totalQuantity = updatedCarts.reduce((total, updatedCarts) => total + updatedCarts.quantity, 0);
+    const totalQuantity = cartItems.reduce((total, cartItems) => total + cartItems.quantity, 0);
     
 
     const [slideOver, setSlideOver] = useState({
         background: 'opacity-0',
         panel : ' translate-x-full'
     });
-
-
-    useEffect(() => {
-        if(cartItems.length != 0)
-        {
-            setUpdatedCarts(cartItems)
-        }
-    })
 
 
     function closeSlideOver()

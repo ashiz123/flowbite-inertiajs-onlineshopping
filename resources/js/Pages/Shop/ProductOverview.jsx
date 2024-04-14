@@ -28,7 +28,7 @@ export default function ProductOverview({product}) {
  })
 
  //here is the context
- const { addToCart } = useContext(CartContext);// adding data to context to display the quantity of cart in navbar
+ const { updateToCart } = useContext(CartContext);// adding data to context to display the quantity of cart in navbar
 
  const[isValid, setIsValid] = useState(false);
  const [variantError, setVariantError] = useState({})
@@ -95,12 +95,12 @@ const addItemToCart = async(e) =>
     //use for both variant and product
     const fetchAddItemToCart =async(productVariant = null) =>
     {
-     console.log(productVariant)
+     
       try{
         await axios.post('/shop/add-item-to-cart', {product, productVariant} )
         .then(function(response){
         
-         addToCart(response.data); //sending data to context 
+         updateToCart(response.data); //sending data to context 
          setItemAdded(true);
         //  window.location.reload(false);
         })}
@@ -117,8 +117,7 @@ const addItemToCart = async(e) =>
       await axios.post('/shop/get-variant-by-attribute/', variant)
      .then(
        function(response){
-         console.log(response.data);
-         fetchAddItemToCart(response.data)
+        fetchAddItemToCart(response.data)
          
        })
      .catch(function(error){
@@ -291,6 +290,11 @@ const addItemToCart = async(e) =>
           <>
           <br /><br />
            No variations found
+           <br /><br />
+           {
+                itemAdded &&
+                <SuccessAlert>Item Addded Successfully</SuccessAlert>
+            }
           <button type="submit" onClick={addItemToCart} class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
           </>
            

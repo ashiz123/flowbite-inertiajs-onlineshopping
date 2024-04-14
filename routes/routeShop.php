@@ -51,6 +51,7 @@ Route::middleware(['auth.customer'])->group(function(){
    Route::post('/get-variant-by-attribute', [CartController::class, 'getVariantByAttribute'])->name('cart.getVariantByAttribute');
    Route::post('/add-item-to-cart', [CartController::class, 'addItemToCart'])->name('cart.add');
    Route::get('/get-cart-items', [CartController::class, 'getCartItems'])->name('cart.get');
+   Route::delete('/delete-cart-item/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.delete');
  //profile route start
 
   // Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');

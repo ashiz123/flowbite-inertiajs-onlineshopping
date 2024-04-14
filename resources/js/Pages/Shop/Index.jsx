@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import Layout from './Layout/Layout';
-import { router, useForm } from '@inertiajs/react';
-import { checkUserLoggedIn, loggedInUser } from '@/Functions/LoggedInUser';
-import { useDispatch } from 'react-redux';
-import { usePage } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
+// import { checkUserLoggedIn, loggedInUser } from '@/Functions/LoggedInUser';
+// import { useDispatch } from 'react-redux';
+
 
 export default function Index({products}) {
    
@@ -12,13 +12,14 @@ export default function Index({products}) {
   //checking either page logged in or not
   // checkUserLoggedIn(dispatch)
   // const imagePath = '/storage/images/blazzer.jpeg' ;
-  console.log(usePage().props);
+  
   function productOverview(id){
     router.get('/shop/product/' + id + '/overview');
   }
  
   return (
    <Layout className = "m-4">
+   <div>Add Category and filter</div>
     <section  >
     <div className="grid md:grid-cols-3">
                     <div className="relative overflow-hidden group ">

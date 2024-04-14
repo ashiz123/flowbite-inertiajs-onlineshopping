@@ -10,12 +10,14 @@ export const CartProvider = ({ children }) => {
 
 
 
-  const addToCart = (data) => {
+  const updateToCart = (data) => {
      setCartItems(data);
    };
 
+  
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider value={{ cartItems, updateToCart }}>
       {children}
     </CartContext.Provider>
   );

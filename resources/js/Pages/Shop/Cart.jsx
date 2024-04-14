@@ -1,6 +1,7 @@
 import React, {useState,useEffect, useContext} from 'react';
 import { usePage, router } from '@inertiajs/react';
 import axios from 'axios';
+import CartContext from './Contexts/CartContext';
 
 
 
@@ -12,13 +13,14 @@ export default function Cart({slideOver, closeSlideOver}) {
   console.log(usePage().props);
   const totalAmount = carts.reduce((total, carts) => total + carts.price * carts.quantity, 0);
   const [updatedCarts, setUpdatedCarts] = useState(carts)
+  const { updateToCart } = useContext(CartContext);
 
 
 
 
   useEffect(() => {
    getCartItems()
-  })
+  }, [carts])
  
  
   const getCartItems = async()  =>
@@ -47,6 +49,23 @@ export default function Cart({slideOver, closeSlideOver}) {
     function checkout()
     {
        router.get('/shop/checkout/create');
+    }
+
+    function removeItemFromCart(data)
+    {
+      // console.log(data.product_id);
+      const fetchRemoveItemFromCart = async() => {
+        await axios.delete(`/shop/delete-cart-item/${data.product_id}`)
+        .then(response => {
+          console.log(response.data)
+          setUpdatedCarts(response.data);
+          updateToCart(response.data); //context
+        })
+        .catch(error => console.log(error))
+      }
+  
+      fetchRemoveItemFromCart();
+
     }
 
   
@@ -134,7 +153,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                             <p className="text-gray-500">Qty {item.quantity}</p>
   
                             <div className="flex">
-                              <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+                              <button onClick={() => removeItemFromCart(item)} type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
                             </div>
                           </div>
                         </div>

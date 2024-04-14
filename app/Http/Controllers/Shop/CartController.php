@@ -97,21 +97,40 @@ class CartController extends Controller
     
     public function removeItemFromCart(Request $request)
     {
-        $cart = $request->session()->get('cart', []);
-
-
-        $itemId = $request['id'];
-        if (array_key_exists($itemId, $cart)) {
-            // If the item exists, increase its quantity
-            if($cart[$itemId]['quantity'] >= 1)
-            {
-                $cart[$itemId]['quantity'] -= 1;
-            }
            
+        $cart = $request->session()->get('cart', []); // Retrieve cart from session, default to empty array
+        $product_id = $request['id'];
+
+        // to get the id of cart
+        foreach ($cart as $item) {
+         if($item['product_id']  == $product_id)
+          {
+            if($item['variant'])
+            {
+              $itemId = $item['variant']['id'];
+            }else{
+              $itemId = $request['id'];
+            }
+          }else{
+            continue;
+          }
+         
         }
 
-        $request->session()->put('cart', $cart);
-        return $cart;
-
+        $updatedCart = $this->removeItemFromSession($cart, $itemId);
+        $request->session()->put('cart', $updatedCart);
+        return array_values($updatedCart);
     }
+
+
+    public function removeItemFromSession($cart, $itemId)
+    {
+        Log::info($itemId);
+        unset($cart[$itemId]);
+        return $cart;
+    }
+    
+
+       
+    
 }
