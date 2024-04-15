@@ -123,10 +123,12 @@ class CartController extends Controller
     }
 
 
+
+
+
     public function removeItemFromSession($cart, $itemId)
     {
-        Log::info($itemId);
-        unset($cart[$itemId]);
+       unset($cart[$itemId]);
         return $cart;
     }
     

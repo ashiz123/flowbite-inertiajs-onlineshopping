@@ -14,12 +14,22 @@ export default function Navigation() {
     const [slideOn, setSlideOn] = useState(false);
     const [toggle , setToggle] = useState(false);
     const [megaMenu , setMegaMenu] = useState(false);
-    const { cartItems } = useContext(CartContext); //getting cartItems from context for updated cart quantity
+    const { cartItems, updateStatus } = useContext(CartContext); //getting cartItems from context for updated cart quantity
     
 
-    
+    const [updatedCart, setUpdatedCart] = useState(carts);
+    const totalQuantity = updatedCart.reduce((total, updatedCart) => total + updatedCart.quantity, 0);
 
-    const totalQuantity = cartItems.reduce((total, cartItems) => total + cartItems.quantity, 0);
+
+    useEffect(() => {
+        //if cartitems changed statement works otherwise keep the existing carts items
+        if(updateStatus)
+       {
+         setUpdatedCart(cartItems);
+       }
+    })
+
+    
     
 
     const [slideOver, setSlideOver] = useState({
