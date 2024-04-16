@@ -21,8 +21,11 @@ class CartController extends Controller
     {
         $color = $request['color'];
         $size = $request['size'];
+        $productId = $request['product_id'];
+     
 
-        $variant = Variant::where('color', $color)
+        $variant = Variant::where('product_id', $productId)
+                            ->where('color', $color)
                             ->where('size', $size)
                             ->first();
                         
@@ -49,12 +52,7 @@ class CartController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-        if($product_variant != null)
-        {
-            $itemId = $product_variant['id'];
-        }else{
-            $itemId = $product->id;
-        }
+        $itemId = $this->getItemId($product_variant, $product->id);
       
        
         if (array_key_exists($itemId, $cart)) {
@@ -78,7 +76,6 @@ class CartController extends Controller
         }
 
         $request->session()->put('cart', $cart);
-        Log::info($cart);
         return array_values($cart);
        
     }   
@@ -105,12 +102,7 @@ class CartController extends Controller
         foreach ($cart as $item) {
          if($item['product_id']  == $product_id)
           {
-            if($item['variant'])
-            {
-              $itemId = $item['variant']['id'];
-            }else{
-              $itemId = $request['id'];
-            }
+           $itemId = $this->getItemId($item['variant'], $request['id']);
           }else{
             continue;
           }
@@ -125,13 +117,70 @@ class CartController extends Controller
 
 
 
-
+  //to remove item from cart
     public function removeItemFromSession($cart, $itemId)
     {
        unset($cart[$itemId]);
         return $cart;
     }
-    
+
+
+
+    //to get item id of cart which can be product id or variant id
+    public function getItemId($variant, $productId)
+    {
+        if($variant)
+        {
+          $itemId = $variant['id'];
+        }else{
+          $itemId = $productId;
+        }
+
+        return $itemId;
+    }
+
+
+    public function increaseItemInCart($productId, Request $request)
+    {
+        $cart = $request->session()->get('cart', []); 
+        $itemId = $this->getItemId($request['variant'], $productId);
+
+
+        if (array_key_exists($itemId, $cart)) {
+            // If the item exists, increase its quantity
+            $cart[$itemId]['quantity'] += 1 ;
+            $request->session()->put('cart', $cart);
+            return array_values($cart);
+        }
+    }
+
+
+    public function decreaseItemInCart($productId, Request $request)
+    {
+        $cart = $request->session()->get('cart', []); 
+        $itemId = $this->getItemId($request['variant'], $productId);
+
+
+        if (array_key_exists($itemId, $cart)) {
+            // If the item exists, increase its quantity
+            if($cart[$itemId]['quantity'] > 1)
+            {
+                $cart[$itemId]['quantity'] -= 1 ;
+             }
+            else
+            {
+             $cart =  $this->removeItemFromSession($cart,$itemId);
+            }
+            $request->session()->put('cart', $cart);
+            return array_values($cart);
+            
+        }
+    }
+
+
+
+      
+  
 
        
     

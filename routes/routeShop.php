@@ -52,6 +52,8 @@ Route::middleware(['auth.customer'])->group(function(){
    Route::post('/add-item-to-cart', [CartController::class, 'addItemToCart'])->name('cart.add');
    Route::get('/get-cart-items', [CartController::class, 'getCartItems'])->name('cart.get');
    Route::delete('/delete-cart-item/{id}', [CartController::class, 'removeItemFromCart'])->name('cart.delete');
+   Route::match(['put', 'patch'], '/increase-item-in-cart/{productId}', [CartController::class, 'increaseItemInCart'])->name('cart.item.increase');
+   Route::match(['put', 'patch'], '/decrease-item-in-cart/{productId}',[CartController::class, 'decreaseItemInCart'])->name('cart.item.decrease');
  //profile route start
 
   // Route::get('/profile/create', [ProfileController::class, 'create'])->name('shop.profile.create');

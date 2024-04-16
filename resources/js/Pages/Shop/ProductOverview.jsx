@@ -24,7 +24,8 @@ export default function ProductOverview({product}) {
 
  const[variant, setVariant] = useState({
   'color' : '',
-  'size' : ''
+  'size' : '',
+  'product_id': product.id
  })
 
  //here is the context
@@ -92,14 +93,15 @@ const addItemToCart = async(e) =>
     }
     }
 
-    //use for both variant and product
+
+
+    //function use for both variant and product
     const fetchAddItemToCart =async(productVariant = null) =>
     {
      
       try{
         await axios.post('/shop/add-item-to-cart', {product, productVariant} )
         .then(function(response){
-        
          updateToCart(response.data); //sending data to context 
          setItemAdded(true);
         //  window.location.reload(false);
@@ -112,12 +114,13 @@ const addItemToCart = async(e) =>
 
 
 
-    //for variant only
+    //function for variant only
     const fetchVariantByAttribute = async() => {
       await axios.post('/shop/get-variant-by-attribute/', variant)
      .then(
        function(response){
         fetchAddItemToCart(response.data)
+        console.log(response.data);
          
        })
      .catch(function(error){
