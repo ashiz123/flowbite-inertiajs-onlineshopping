@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import Layout from './Layout/Layout'
 import axios from 'axios';
 import { extractUniqueColor, extractUniqueSize, validateVariant } from './ProductOverviewFunction';

@@ -6,7 +6,7 @@ export default function CartItems() {
 
     const { carts } = usePage().props;
     const[updatedCarts, setUpdatedCarts] = useState(carts)
-    const totalAmount = updatedCarts.reduce((total, updatedCarts) => total + updatedCarts.price * updatedCarts.quantity, 0);
+    
 
    
 

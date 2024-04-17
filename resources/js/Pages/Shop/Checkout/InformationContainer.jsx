@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import { Accordion } from 'flowbite-react';
 import Payment from './Payment';
 import {Location} from './Location';
@@ -14,6 +14,7 @@ import { InitialCheckoutForm } from './InitialCheckoutForm';
 import { usePage } from '@inertiajs/react';
 import { dummyData } from './dummyData';
 import {ValidateCheckout, ValidateOnChangeInputCheckout} from './CheckoutValidate';
+import CartContext from '../Contexts/CartContext';
 
 
 
@@ -26,6 +27,7 @@ function InformationContainer({checkoutFailed}) {
 const [formData, setFormData] = useState(InitialCheckoutForm)
 const { address_api } = usePage().props;
 const [errors, setErrors] = useState({});
+const {updateToCart} = useContext(CartContext);
 
 
 
@@ -85,9 +87,17 @@ function onSelectedAddress(selectedSuggestId)
   const checkout = async() => {
     try {
       //CheckoutController
-      const response = await axios.post('/shop/checkout/process',  {formData})
-      console.log(response);
-      router.visit(response.data.redirect_to);
+      await axios.post('/shop/checkout/process',  {formData})
+      .then((response) => {
+        console.log(response.data);
+        // updateToCart([]);
+        router.visit(response.data.redirect_to);
+
+      })
+
+      .catch((error) => console.error(error))
+     
+
     }
     catch(error){
       if (error.response) {

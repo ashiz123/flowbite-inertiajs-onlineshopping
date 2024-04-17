@@ -18,6 +18,7 @@ const Layout = ({ children} ) => {
           </header>
           <nav>
             <Navigation />
+            <Nav />
           </nav>
           <main className='mt-5 container mx-auto'>
             {children}

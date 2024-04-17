@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Stock;
+use App\Notifications\NewOrderNotification;
 
 use App\Interfaces\CheckoutRepositoryInterface;
 use App\Interfaces\StockRepositoryInterface;
-
-
+use App\Models\User;
 
 class CheckoutController extends Controller
 {
@@ -60,12 +60,15 @@ class CheckoutController extends Controller
      
         $this->stockRepositoryInterface->updateStock($cartItems);
         
-
         Session::forget('cart');
        
-        
         DB::commit();
         
+        $admin = User::where('type', 'seller')
+        ->where('email', 'ashizhamal@gmail.com')
+        ->first();
+        Log::info($admin);
+        $admin->notify(new NewOrderNotification($order));
 
         // $currentDate = date('YmdHis');
         return response()->json(['redirect_to' => "/shop/thankyou"], 200);

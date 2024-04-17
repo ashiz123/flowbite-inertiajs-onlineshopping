@@ -19,7 +19,7 @@ export default function Index({products}) {
  
   return (
    <Layout className = "m-4">
-   <div>Add Category and filter</div>
+  
     <section  >
     <div className="grid md:grid-cols-3">
                     <div className="relative overflow-hidden group ">

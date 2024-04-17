@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import CartContext from './Contexts/CartContext'
-import Cart from './Cart'
 import { usePage } from '@inertiajs/react';
 
 export default function CartItem({ item, removeItemFromCart, incrementItemInCart, decrementItemInCart}) {
