@@ -1,7 +1,6 @@
 import { usePage } from '@inertiajs/react';
 import React, { useState, useEffect} from 'react'
 import { useDispatch } from 'react-redux';
-import Address from './Old checkoutfile/Address';
 import Payment from './Payment';
 
 export default function PersonalInformation({formData, changeData, errors}) {
@@ -9,8 +8,6 @@ export default function PersonalInformation({formData, changeData, errors}) {
     
 
     const {auth} = usePage().props;
-    
-
     const firstname = auth.user.name.split(' ')[0]
     const lastname = auth.user.name.split(' ')[1];
 

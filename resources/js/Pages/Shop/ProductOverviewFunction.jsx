@@ -37,27 +37,31 @@ export function extractUniqueColor(variants){
 
 
      switch(name){
-       case 'purple':
+       case 'Purple':
          color = 'bg-purple-700'
          console.log('purple test');
         break;
         
-       case 'black':
+       case 'Black':
          color = 'bg-black'
          break;
  
-       case 'green':
+       case 'Green':
         color = 'bg-green-700'
         break;
        
-       case 'yellow':
+       case 'Yellow':
         color = 'bg-yellow-300'
         break;
 
 
-        case 'blue':
+        case 'Blue':
         color = 'bg-blue-600'
         break;
+
+        case 'Navy':
+          color = 'bg-lime-950'
+          break;
  
       
  
@@ -67,4 +71,27 @@ export function extractUniqueColor(variants){
      }
  
      return color;
+   }
+
+
+
+   export const validateVariant = (variant) => {
+
+    let errors = {};
+    let valid = true;
+  
+  
+    if(!variant.size){
+      errors.size = "Size is required";
+      valid = false;
+    }
+  
+    if(!variant.color){
+      errors.color = "Size is required";
+      valid = false;
+    }
+
+    return{valid, errors}
+    
+  
    }

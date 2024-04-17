@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
 import Layout from '../Layout/Layout'
-import {usePage} from '@inertiajs/react';
 import InformationContainer from './InformationContainer';
+import CartItems from '../CartItems';
+import { usePage } from '@inertiajs/react';
 
 
 export default function Create() {
 
-const {carts} = usePage().props
 const [validationFailed, setValidationFailed] = useState(null);
+const {carts} = usePage().props;
 
-function checkoutFailed()
+const totalAmount = carts.reduce((totalAmount, carts) => totalAmount + carts.price * carts.quantity, 0);
+
+
+
+console.log(carts);
+
+
+function checkoutFailed(message)
 {
-   setValidationFailed('Mandatory field is not completed. Checkout unsuccessful');
+   setValidationFailed(message);
 }
 
 return (
@@ -45,46 +53,18 @@ return (
                   <div className="flow-root">
                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                       
-                      {
-                        carts?.map((item, i) => {
-                          const imagePath = '/storage/' + item.image
-                          return(
-                            <span key = {i}> 
-                              <li className="flex py-6">
-                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <img src={imagePath} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
-                        </div>
-  
-                        <div className="ml-4 flex flex-1 flex-col">
-                          <div>
-                            <div className="flex justify-between text-base font-medium text-gray-900">
-                              <h3>
-                                <a href="#">{item.name}</a>
-                              </h3>
-                              <p className="ml-4">${item.price * item.quantity}.00</p>
-                              
-                            </div>
-                            <p className="mt-1 text-sm text-gray-500">category title</p>
-                            <p className=" text-sm text-gray-500">£{item.price}/unit</p>
-                          </div>
-                          <div className="flex flex-1 items-end justify-between text-sm">
-                            <p className="text-gray-500">Qty {item.quantity}</p>
-  
-                            <div className="flex">
-                              <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                            </span>
-                          )
-                        })
-                       
-                      }
+                      <CartItems />
                      {/* <!-- More products... --> */}
                     </ul>
                   </div>
                 </div>
+                <br />
+                <div className="border-t border-gray-200 py-4">
+                <div className="flex justify-between text-base font-medium text-gray-900">
+                  <p>Subtotal</p>
+                  <p >${totalAmount}.00</p>
+                </div>
+              </div>
               </div>
 
             </div>

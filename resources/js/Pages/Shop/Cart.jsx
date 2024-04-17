@@ -1,16 +1,18 @@
-import React, {useState,useEffect} from 'react';
-import { usePage, router } from '@inertiajs/react';
-import { Container } from 'postcss';
+import React, { useContext} from 'react';
+import {  router } from '@inertiajs/react';
+import CartContext from './Contexts/CartContext';
+import CartItems from './CartItems';
+
 
 
 
 
 export default function Cart({slideOver, closeSlideOver}) {
 
-  const { carts } = usePage().props;
-  const totalAmount = carts.reduce((total, carts) => total + carts.price * carts.quantity, 0);
-  
-  
+
+  const {cartItems  } = useContext(CartContext);
+  const totalAmount = cartItems.reduce((total, cartItems) => total + cartItems.price * cartItems.quantity, 0);
+
   function closeSlide()
     {
         return closeSlideOver();
@@ -20,6 +22,8 @@ export default function Cart({slideOver, closeSlideOver}) {
     {
        router.get('/shop/checkout/create');
     }
+
+  
 
   
    return (
@@ -53,42 +57,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                   <div className="flow-root">
                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                       
-                      {
-                        carts?.map((item, i) => {
-                          const imagePath = '/storage/' + item.image
-                          return(
-                            <span key = {i}> 
-                              <li className="flex py-6">
-                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          <img src={imagePath} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="h-full w-full object-cover object-center" />
-                        </div>
-  
-                        <div className="ml-4 flex flex-1 flex-col">
-                          <div>
-                            <div className="flex justify-between text-base font-medium text-gray-900">
-                              <h3>
-                                <a href="#">{item.name}</a>
-                              </h3>
-                              <p className="ml-4">${item.price * item.quantity}.00</p>
-                              
-                            </div>
-                            <p className="mt-1 text-sm text-gray-500">Salmon</p>
-                            <p className=" text-sm text-gray-500">£{item.price}/unit</p>
-                          </div>
-                          <div className="flex flex-1 items-end justify-between text-sm">
-                            <p className="text-gray-500">Qty {item.quantity}</p>
-  
-                            <div className="flex">
-                              <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                            </span>
-                          )
-                        })
-                       
-                      }
+                      <CartItems />
                      {/* <!-- More products... --> */}
                     </ul>
                   </div>
@@ -102,7 +71,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                 </div>
                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                 <div className="mt-6">
-                  <a onClick = {checkout} href="#" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+                  <a onClick = {checkout} href="#" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Go To Checkout</a>
                 </div>
                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                   <p>
@@ -114,6 +83,7 @@ export default function Cart({slideOver, closeSlideOver}) {
                   </p>
                 </div>
               </div>
+
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import Nav from './Nav';
 import Footer from './Footer';
 import { initFlowbite } from 'flowbite'
 
+
 const Layout = ({ children} ) => {
   
   initFlowbite();
@@ -17,6 +18,7 @@ const Layout = ({ children} ) => {
           </header>
           <nav>
             <Navigation />
+            <Nav />
           </nav>
           <main className='mt-5 container mx-auto'>
             {children}

@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Stock;
+use App\Notifications\NewOrderNotification;
 
 use App\Interfaces\CheckoutRepositoryInterface;
 use App\Interfaces\StockRepositoryInterface;
-
-
+use App\Models\User;
 
 class CheckoutController extends Controller
 {
@@ -44,35 +44,50 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-        // $cartItems = $request->session()->get('cart', []);
-        // $total_amount = $this->getTotalAmountOfOrder($cartItems);
+        $cartItems = $request->session()->get('cart', []);
+        if($cartItems){
        
-    try{
+     try{
         DB::beginTransaction();
         
-        $cartItems = $request->session()->get('cart', []);
+        
+       
         $total_amount = $this->getTotalAmountOfOrder($cartItems);
 
         $order = $this->checkoutRepositoryInterface->orderConfirm($request, $total_amount);
-
+        
         $this->checkoutRepositoryInterface->orderDetail($order, $cartItems);
      
         $this->stockRepositoryInterface->updateStock($cartItems);
-
+        
         Session::forget('cart');
-        
-        
+       
         DB::commit();
+        
+        $admin = User::where('type', 'seller')
+        ->where('email', 'ashizhamal@gmail.com')
+        ->first();
+        Log::info($admin);
+        $admin->notify(new NewOrderNotification($order));
 
         // $currentDate = date('YmdHis');
         return response()->json(['redirect_to' => "/shop/thankyou"], 200);
-    }
+      }
+    
 
     catch(\Exception $e)
     {
         DB::rollBack();
         return "Transaction failed: " . $e->getMessage();
+    }}
+    else{
+        
+            // Throw exception if condition is not met
+            throw new \Exception("No items in cart");
+            return response()->json(['No items in cart']);
+        
     }
+    
 
    
 
@@ -93,6 +108,7 @@ class CheckoutController extends Controller
             $total_amount += $sub_total;
         }
         }   
+        
         return $total_amount;
     }
 

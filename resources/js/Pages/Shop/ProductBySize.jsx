@@ -1,11 +1,12 @@
 import React from 'react'
 
-export default function ProductBySize({size, colorsBySize, productId}) {
+export default function ProductBySize({size, colorsBySize, productId, addVariant}) {
 
 
     function getColorsBySize(e)
     {
         e.preventDefault();
+        addVariant('size', size);
         const fetchColors = async() => {
              try{
                 const response = await axios.get(`/shop/product_id/${productId}/size/${size}`)

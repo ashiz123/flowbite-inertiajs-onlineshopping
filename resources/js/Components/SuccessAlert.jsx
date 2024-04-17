@@ -1,7 +1,11 @@
-import React from 'react'
+"use client";
 
-export default function SuccessAlert() {
+import { Alert } from "flowbite-react";
+
+export default function SuccessAlert({children}) {
   return (
-    <div>SuccessAlert</div>
+    <Alert color="success" onDismiss={() => alert('Alert dismissed!')}>
+      <span className="font-medium"></span> {children}
+    </Alert>
   )
 }

@@ -1,15 +1,9 @@
-import React, {useEffect, useState} from 'react'
-import { Navbar } from 'flowbite-react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, {useEffect, useState, useContext} from 'react'
 import {  HiShoppingBag,} from 'react-icons/hi';
 import { router, usePage, Link} from '@inertiajs/react';
 import Cart from '../Cart';
+import CartContext from '../Contexts/CartContext';
 
-
-// import { useDispatch, useSelector} from 'react-redux';
-// import { loggedInUser } from '@/Functions/LoggedInUser';
-// import { logoutSuccess } from '@/Redux/Actions/AuthAction';
-// import { logoutUser } from '@/Functions/LogoutUser';
 
 
 
@@ -20,10 +14,22 @@ export default function Navigation() {
     const [slideOn, setSlideOn] = useState(false);
     const [toggle , setToggle] = useState(false);
     const [megaMenu , setMegaMenu] = useState(false);
-
+    const { cartItems, updateStatus } = useContext(CartContext); //getting cartItems from context for updated cart quantity
     
 
-    const totalQuantity = carts.reduce((total, carts) => total + carts.quantity, 0);
+    const [updatedCart, setUpdatedCart] = useState(carts);
+    const totalQuantity = updatedCart.reduce((total, updatedCart) => total + updatedCart.quantity, 0);
+
+
+    useEffect(() => {
+        //if cartitems changed statement works otherwise keep the existing carts items
+        if(updateStatus)
+       {
+         setUpdatedCart(cartItems);
+       }
+    })
+
+    
     
 
     const [slideOver, setSlideOver] = useState({
@@ -32,18 +38,7 @@ export default function Navigation() {
     });
 
 
-    const [cart, setCart] = useState({
-        'product_name' : '',
-        'quantity' : '',
-        'price' : ''
-    })
-
-
-      
-
-
-
-        function closeSlideOver()
+    function closeSlideOver()
         {
             setSlideOver({...slideOver, 
                 background: ' opacity-0',
@@ -67,12 +62,7 @@ export default function Navigation() {
 
 
 
-         function addItemToCart(e)
-        {
-            e.preventDefault();
-            
-        }
-
+        
         const logout = async (e) => {
             e.preventDefault();
             if (window.confirm("Do you want to logout ?")) {
@@ -182,7 +172,7 @@ export default function Navigation() {
                 <li>
                 {/* data-dropdown-toggle="mega-menu-dropdown"  */}
                     <button id="mega-menu-dropdown-button" onClick={handleMegaMenu} className="flex items-center justify-between w-full py-2 px-3 font-medium text-gray-900 border-b border-gray-100 md:w-auto hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-blue-500 md:dark:hover:bg-transparent dark:border-gray-700">
-                        Company <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        Categories <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
   </svg>
                     </button>
