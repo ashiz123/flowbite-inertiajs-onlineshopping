@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Events\OrderPlacedEvent;
+use App\Events\OrderReceivedEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,6 +20,7 @@ use App\Notifications\NewOrderNotification;
 use App\Interfaces\CheckoutRepositoryInterface;
 use App\Interfaces\StockRepositoryInterface;
 use App\Models\User;
+use App\Notifications\OrderReceivedNotification;
 
 class CheckoutController extends Controller
 {
@@ -64,11 +67,11 @@ class CheckoutController extends Controller
        
         DB::commit();
         
-        $admin = User::where('type', 'seller')
-        ->where('email', 'ashizhamal@gmail.com')
-        ->first();
-        Log::info($admin);
-        $admin->notify(new NewOrderNotification($order));
+      
+        event(New OrderPlacedEvent($order));
+        
+        
+        
 
         // $currentDate = date('YmdHis');
         return response()->json(['redirect_to' => "/shop/thankyou"], 200);

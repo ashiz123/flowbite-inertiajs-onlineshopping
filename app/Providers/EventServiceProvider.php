@@ -6,6 +6,14 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\OrderPlaced;
+use App\Events\OrderPlacedEvent;
+use App\Events\OrderReceivedEvent;
+use App\Listeners\NotifyCustomerOrderPlaced;
+use App\Listeners\NotifySellerOrderPlaced;
+use App\Listeners\OrderPlacedListener;
+
+// use App\Observers\OrderObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +26,14 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        
+        OrderPlacedEvent::class => [ //event
+            NotifyCustomerOrderPlaced::class,  //1 listener (buyer)
+            NotifySellerOrderPlaced::class //2 listener (seller)
+          
+        ],
+
+       
     ];
 
     /**
