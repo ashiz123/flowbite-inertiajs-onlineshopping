@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\Models\Product;
 use App\Models\Photo;
+use App\Models\OrderDetails;
 
 class Variant extends Model
 {
@@ -44,4 +45,6 @@ class Variant extends Model
     {
         return $this->morphMany('App\Models\Variant', 'stockable');
     }
+
+   
 }

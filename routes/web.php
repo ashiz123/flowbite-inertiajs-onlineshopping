@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Seller\DashboardController;
 use App\Http\Controllers\Seller\CategoryController;
+use App\Http\Controllers\Seller\NotificationController;
 use App\Http\Controllers\Seller\ProductController;
 use App\Http\Controllers\Seller\OptionController;
 use App\Http\Controllers\Seller\OrderController;
@@ -120,6 +121,10 @@ Route::middleware('auth.seller')->prefix('option')->controller(OptionController:
     Route::middleware('auth.seller')->prefix('stocks')->controller(StockController::class)->group(function(){
         Route::get('', 'index')->name('stocks.index');
     });
+
+
+    Route::get('/notifications',[NotificationController::class , 'getAllNotifications'] )->name('notifications.index');
+    Route::match(['put', 'patch'], '/read-notification/{id}', [NotificationController::class , 'onRead'])->name('read.notification');
 
 
 

@@ -65,8 +65,8 @@ export default function OrderPage({order}) {
                               </div>
                           </th>
                           <th scope="col" className="px-4 py-3">Product</th>
-                          <th scope="col" className="px-4 py-3">Category</th>
                           <th scope="col" className="px-4 py-3">Variant</th>
+                          <th scope="col" className="px-4 py-3">Variant Name</th>
                           <th scope="col" className="px-4 py-3">Quantity</th>
                           <th scope="col" className="px-4 py-3">Rate</th>
                           <th scope="col" className="px-4 py-3">Total</th>

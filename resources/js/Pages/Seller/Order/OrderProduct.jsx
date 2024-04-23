@@ -4,17 +4,16 @@ import React, { useEffect, useState } from 'react'
 export  function OrderProduct({detail}) {
    const [productDetail, setProductDetail] = useState()
   
-
+   
+  console.log(productDetail);
  
+  
 
-    
-    
-
-    useEffect(()=> {
+  useEffect(()=> {
         const fetchData = async() => {
            try{
             console.log(detail.id);
-            const response = await axios.get(`/orders/product/${detail.product_id}`)
+            const response = await axios.get(`/orders/product/${detail.id}`)
             console.log(response)
             setProductDetail(response.data);
             }
@@ -38,13 +37,13 @@ export  function OrderProduct({detail}) {
                           </td>
                           <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                               <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png" alt="iMac Front Image" className="w-auto h-8 mr-3" />
-                              {productDetail && productDetail.title}
+                              {productDetail && productDetail.product.title}
                           </th>
                           <td className="px-4 py-2">
-                              <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{productDetail && productDetail.category.title}</span>
+                              <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{productDetail && productDetail.product.variant ? 'Variant' : 'No Variant' }</span>
                           </td>
 
-                          <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{'no variant'}</td>
+                          <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{productDetail && productDetail.product.variant === 1 ? productDetail.variant.title : '-' }</td>
                           
                           <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                               <div className="flex items-center">
@@ -52,8 +51,8 @@ export  function OrderProduct({detail}) {
                               </div>
                           </td>
                           
-                          <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{productDetail && productDetail.minimum_price}</td>
-                          <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{productDetail && productDetail.minimum_price * detail.order_quantity}</td>
+                          <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{productDetail && productDetail.product.minimum_price}</td>
+                          <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">{productDetail && productDetail.product.minimum_price * detail.order_quantity}</td>
                           
                           
                       </tr>

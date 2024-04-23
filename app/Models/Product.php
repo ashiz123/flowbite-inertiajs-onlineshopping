@@ -37,6 +37,11 @@ class Product extends Model
     return $this->hasMany(Photo::class);
    }
 
+   public function getPhotoPath()
+   {
+    return $this->photos->path;
+   }
+
    public function categoryTitle()
     {
         return $this->category->title;

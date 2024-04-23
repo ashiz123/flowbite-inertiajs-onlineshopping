@@ -54,7 +54,10 @@ class OrderReceivedNotification extends Notification
             'status'=> 'pending',
             'type' => 'seller',
             'title' => 'Order Received',
-            'message' => 'You have received the order' .$this->order->order_number
+            'url' =>  url('/orders/show/'.$this->order->order_number),
+            'order_number' => $this->order->order_number,
+            'message' => 'You have received the order '
+
         ];
     }
 }
