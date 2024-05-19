@@ -5,8 +5,9 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController; //this is breeze controller
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CheckoutController;
+use App\Http\Controllers\Shop\FilterController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
+
 
 
 use App\Http\Controllers\Shop\HomepageController;
@@ -43,7 +44,8 @@ Route::get('product/{id}/overview', [ProductController::class, 'show'])->name('s
 Route::get('/product_id/{productId}/color/{color}', [ProductController::class, 'getSizesByColor'])->name('shop.product.color');
 Route::get('product_id/{productId}/size/{size}', [ProductController::class, 'getColorsBySize' ])->name('shop.product.size');
 
-
+//product filter
+Route::get('/filterBy', [FilterController::class, 'filterBy'])->name('filter.name');
 
 //AUTHENTICATING CUSTOMER PAGES
 Route::middleware(['auth.customer'])->group(function(){
@@ -69,6 +71,9 @@ Route::middleware(['auth.customer'])->group(function(){
   //checkout address
   Route::post('/checkout/add/address', [CheckoutController::class, 'addAddress'])->name('shop.checkout.address');
   Route::get('/thankyou', [CheckoutController::class, 'checkoutSuccess'])->name('checkout.success');
+
+
+  
 });
 
 

@@ -62,6 +62,11 @@ class Product extends Model
         return $this->stocks();
     }
 
+    public function scopeByName($query, $name)
+    {
+        return $query->where('title', 'like', "%$name%");
+    }
+
     // public function colors()
     // {
     //     return $this->hasMany(Color::class);

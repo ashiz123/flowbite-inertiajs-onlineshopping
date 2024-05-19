@@ -39,7 +39,7 @@ class OrderController extends Controller
       // $product = Product::with('category', 'variants')->find($id);
       // return $product;
 
-      $orderDetail = OrderDetails::with('product', 'variant')->find($orderDetailId);
+      $orderDetail = OrderDetails::with('product.photos', 'variant.photos')->find($orderDetailId);
       return $orderDetail;
     }
 

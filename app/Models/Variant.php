@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Models\Product;
 use App\Models\Photo;
@@ -23,9 +23,9 @@ class Variant extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function photo(): HasOne
+    public function photos(): HasMany
     {
-        return $this->hasOne(Photo::class);
+        return $this->hasMany(Photo::class);
     }
 
 

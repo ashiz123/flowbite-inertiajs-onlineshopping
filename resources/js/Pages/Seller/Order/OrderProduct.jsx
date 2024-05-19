@@ -1,15 +1,12 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+// import ImageComponent from '@/Components/ImageComponent'
 
 export  function OrderProduct({detail}) {
    const [productDetail, setProductDetail] = useState()
-  
-   
-  console.log(productDetail);
- 
-  
+   const [path, setPath] = useState('')
 
-  useEffect(()=> {
+   useEffect(()=> {
         const fetchData = async() => {
            try{
             console.log(detail.id);
@@ -24,6 +21,7 @@ export  function OrderProduct({detail}) {
 
         }
         fetchData();
+       
     }, [detail.product_id])
 
 
@@ -36,7 +34,11 @@ export  function OrderProduct({detail}) {
                               </div>
                           </td>
                           <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                              <img src="https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png" alt="iMac Front Image" className="w-auto h-8 mr-3" />
+                              <img src={productDetail ? '/storage/' + productDetail.product.photos[0].path: 'https://flowbite.s3.amazonaws.com/blocks/application-ui/products/imac-front-image.png' }  
+                              alt="iMac Front Image" 
+                              className="w-auto h-8 mr-3" />
+                              
+
                               {productDetail && productDetail.product.title}
                           </th>
                           <td className="px-4 py-2">
