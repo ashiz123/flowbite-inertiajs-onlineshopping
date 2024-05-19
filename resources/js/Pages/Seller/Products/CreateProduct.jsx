@@ -5,6 +5,7 @@ import { router, useForm, usePage } from '@inertiajs/react';
 import AppSidebar from '@/Layouts/AppSidebar';
 import Navigation from '@/Layouts/Navigation';
 import {Heading} from '@/Components/heading';
+import Template from '../Layout/Template';
 
 import { ErrorAlert } from '@/Components/ErrorAlert';
 import { Avatar } from 'flowbite-react';
@@ -33,6 +34,7 @@ const { data, setData, post, progress, error, processing, reset } = useForm({
 const[successMessage, setSuccessMessage] = useState(null)
 const{errors} = usePage().props;
 const [errorQuantity, setErrorQuantity] = useState(false);
+const pageHeading = 'Create Product';
 
 
 
@@ -88,12 +90,8 @@ function handleQuantityChange(e)
 
 
   return (
-    <> 
-    <Navigation />
-    <div className="flex">
-      <AppSidebar />
-    <div className=" flex-1 p-7 ">
-      <Heading>Create Product</Heading>
+    <Template pageHeading={pageHeading}> 
+ 
       {
         successMessage &&
         <Alert color="success" onDismiss={() => alert('Alert dismissed!')}>
@@ -283,9 +281,7 @@ function handleQuantityChange(e)
         Next
       </Button>
     </form>
-      </div>
-      </div>
       
-      </>
+      </Template>
   )
 }

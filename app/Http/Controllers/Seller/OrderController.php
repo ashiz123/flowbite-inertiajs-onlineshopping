@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\Product;
 use App\Models\Status;
 use Illuminate\Support\Facades\Log;
@@ -15,10 +16,7 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
 
-    public function __construct()
-    {
-       
-    }
+  
     public function index()
     { 
         $orders = Order::with(['customer', 'status'])->latest()->get();
@@ -34,18 +32,20 @@ class OrderController extends Controller
         return Inertia::render('Seller/Order/OrderPage', ['order' => $order]);
     } 
 
-    public function showProductOfOrder($id)
+
+
+    public function showProductOfOrder($orderDetailId)
     {
-      Log::info($id);
-      $product = Product::with('category')->find($id);
-      Log::info($product);
-      return $product;
+      // $product = Product::with('category', 'variants')->find($id);
+      // return $product;
+
+      $orderDetail = OrderDetails::with('product.photos', 'variant.photos')->find($orderDetailId);
+      return $orderDetail;
     }
 
 
     public function updateStatus($orderNumber, Request $request)
     {
-      
       $order = Order::where('order_number', $orderNumber)->first();
       $status = $request->json()->all();
       $order->update([

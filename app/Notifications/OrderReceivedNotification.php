@@ -6,17 +6,20 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
-class NewOrderNotification extends Notification implements ShouldQueue
+class OrderReceivedNotification extends Notification
 {
     use Queueable;
+    public $order;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($order)
     {
-        return ['database'];
+        $this->order = $order;
+        Log::info('notification seller');
     }
 
     /**
@@ -48,20 +51,13 @@ class NewOrderNotification extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'status'=> 'pending',
+            'type' => 'seller',
+            'title' => 'Order Received',
+            'url' =>  url('/orders/show/'.$this->order->order_number),
+            'order_number' => $this->order->order_number,
+            'message' => 'You have received the order '
+
         ];
     }
-
-    public function toDatabase()
-    {
-        return [
-            'message' => 'You have a new order.',
-           
-        ];
-    }
-
-    // public function databaseType(object $notifiable): string
-    // {
-    //     return 'invoice-paid';
-    // }
 }

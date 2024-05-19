@@ -1,34 +1,17 @@
 import React from 'react'
-
-import AppSidebar from '@/Layouts/AppSidebar';
-import Navigation from '@/Layouts/Navigation';
-import {Heading} from '@/Components/heading';
-
 import { usePage } from '@inertiajs/react';
 import {Order} from './order.jsx';
+import Template from '../Layout/Template.jsx';
+
 
 
 export default function Orders() {
    
     const{orders, status} = usePage().props;
     
-
-    
-
-    
-    
-
-
-  return (
-    <> 
-    <Navigation />
-    <div className="flex">
-      <AppSidebar />
-    <div className=" flex-1 p-7 ">
-      <Heading>Orders</Heading>
-       
-
-<div class="relative overflow-x-auto">
+return (
+    <Template pageHeading = "Create Product"> 
+        <div class="relative overflow-x-auto">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 overflow-auto">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr><th scope="col" class="px-6 py-3">
@@ -66,9 +49,7 @@ export default function Orders() {
         </tbody>
     </table>
 </div>
-
-      </div>
-      </div>
-      </>
+   
+    </Template>
   )
 }

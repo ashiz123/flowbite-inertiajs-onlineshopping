@@ -1,26 +1,29 @@
 'use client';
 import { useState } from "react";
-import Navigation from "@/Layouts/Navigation";
 import AppSidebar from "@/Layouts/AppSidebar";
 import {Heading, Sub_heading} from "@/Components/heading";
 
 
 
-import { Table, Button } from 'flowbite-react';
+import { Table } from 'flowbite-react';
+import Notifications from "@/Pages/Seller/Notifications/Notifications";
+import Navigation from "@/Layouts/Navigation";
 
 
-const dashboard = ({products}) => 
+const dashboard = ({products, notifications}) => 
 {
- console.log(products.data);
+
   return (
     <>
-    <Navigation />
+    <Navigation/>
     <div className="flex">
       <AppSidebar />
-    <div className=" flex-1 p-7">
+    <div className=" flex-1 ">
     <Heading>Dashboard</Heading>
     <div className="flex flex-wrap">
-  <div className="basis-1/2  p-3 ">
+  <div className="basis-1/2 p-3">
+
+    <Sub_heading>Latest Products</Sub_heading>
 
   <Table>
       <Table.Head>
@@ -100,7 +103,7 @@ const dashboard = ({products}) =>
 
 
   <div className="basis-1/2  p-3 ">
-   {/* Orders section */}
+      <Notifications notifications = {notifications}/>
   </div>
   
 

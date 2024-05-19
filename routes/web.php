@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\OptionController;
-use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\Seller\DashboardController;
+use App\Http\Controllers\Seller\CategoryController;
+use App\Http\Controllers\Seller\NotificationController;
+use App\Http\Controllers\Seller\ProductController;
+use App\Http\Controllers\Seller\OptionController;
+use App\Http\Controllers\Seller\OrderController;
+use App\Http\Controllers\Seller\StockController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,7 +27,7 @@ use Inertia\Inertia;
 
 require __DIR__.'/auth.php';
 
-// Include routes for the Admin concern
+// Include routes for the Seller concern
 Route::prefix('shop')->group(function () {
     require __DIR__.'/routeShop.php';
 });
@@ -120,6 +121,10 @@ Route::middleware('auth.seller')->prefix('option')->controller(OptionController:
     Route::middleware('auth.seller')->prefix('stocks')->controller(StockController::class)->group(function(){
         Route::get('', 'index')->name('stocks.index');
     });
+
+
+    Route::get('/notifications',[NotificationController::class , 'getAllNotifications'] )->name('notifications.index');
+    Route::match(['put', 'patch'], '/read-notification/{id}', [NotificationController::class , 'onRead'])->name('read.notification');
 
 
 

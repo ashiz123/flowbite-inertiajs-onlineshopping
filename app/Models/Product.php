@@ -37,6 +37,11 @@ class Product extends Model
     return $this->hasMany(Photo::class);
    }
 
+   public function getPhotoPath()
+   {
+    return $this->photos->path;
+   }
+
    public function categoryTitle()
     {
         return $this->category->title;
@@ -55,6 +60,11 @@ class Product extends Model
     public function getAllStocks()
     {
         return $this->stocks();
+    }
+
+    public function scopeByName($query, $name)
+    {
+        return $query->where('title', 'like', "%$name%");
     }
 
     // public function colors()

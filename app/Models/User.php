@@ -10,6 +10,9 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserAddress;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Order;
+use App\Models\Notification;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -67,6 +70,17 @@ class User extends Authenticatable
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(DatabaseNotification::class, 'notifiable')->latest();
+    }
+
+   
+    public function unreadNotifications()
+    {
+        return $this->notifications()->whereNull('read_at')->latest();
     }
 
 
